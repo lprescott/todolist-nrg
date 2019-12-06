@@ -5,7 +5,7 @@ A simple secured web application that allows users to maintain multiple lists of
 
 Component         | Technology                                | Version
 ---               | ---                                       | --- 
-Frontend          | [React.js](https://reactjs.org/)          | v16.12.0
+Frontend          | [React.js](https://reactjs.org/)          | v16.12.0 q/ [TypeScript](https://www.typescriptlang.org/) v3.7.2 
 Backend           | [Node.js](https://nodejs.org/en/)         | v12.13.0 w/ [Apollo](https://www.apollographql.com/docs/apollo-server/) v2.9.13
 Query Language    | [GraphQL](https://graphql.org/)           | v14.5.8
 Database          | [PostgresQL](https://www.postgresql.org//)| v12.1                             
@@ -16,7 +16,7 @@ is a front-end, open-source JavaScript library used to make developing user inte
 ## Node.js 
 is a Javascript runtime environment that allows you to run (and code with) the Javascript language outside of the browser (which traditionally shipped with JS support) - for example, on the server. Node.js forms the foundation for JS backends such as Express, Koa, Hapi, Backbone, Sails.js, and many others. It's also possible to define a server with Node without the use of these back-end frameworks.
 
-#### Apollo
+### Apollo
 is a community-maintained open-source GraphQL server. It works with pretty much all Node.js HTTP server frameworks! Apollo Server works with any GraphQL schema built with GraphQL.js--so you may build your schema with that or a convenience library such as graphql-tools.
 
 ## GraphQL
