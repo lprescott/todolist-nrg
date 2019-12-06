@@ -1,6 +1,35 @@
 # todolist-node-react-graphql
 A simple secured web application that allows users to maintain multiple lists of tasks, built with the NRG stack.
 
+
+## Getting started
+
+### Cloning
+
+```bash
+git clone https://github.com/lprescott/todolist-nrg/
+cd todolist-nrg/client
+npm install             # Install javascript package requirements
+npm start               # Serve the react app
+cd ../server    
+npm install             # Install javascript package requirements
+npm start               # Start the Node.js server
+```
+
+### Folder Structure
+
+```bash
+.
+│  README.md│
+└──[web]
+│  │  package.json                     # node dependencies
+│  └──[src]                            # Frontend source files
+│
+└──[server]
+   │  package.json                     # node dependencies
+   └──app.js                           # the server controller
+```
+
 ## the NRG stack
 
 Component         | Technology                                | Version
