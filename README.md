@@ -13,7 +13,7 @@ npm install             # Install javascript package requirements
 npm start               # Serve the react app
 cd ../server    
 npm install             # Install javascript package requirements
-npm start               # Start the Node.js server
+node app.js             # Start the Node.js server
 ```
 
 ### Folder Structure
