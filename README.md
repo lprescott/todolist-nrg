@@ -3,12 +3,12 @@ A simple secured web application that allows users to maintain multiple lists of
 
 ## the NRG stack
 
-Component         | Technology
----               | ---
-Frontend          | [React.js](https://reactjs.org/)
-Backend           | [Node.js](https://nodejs.org/en/)
-Query Language    | [GraphQL](https://graphql.org/)
-Database          | [PostgresQL](https://www.postgresql.org//)                              
+Component         | Technology                                | Version
+---               | ---                                       | --- 
+Frontend          | [React.js](https://reactjs.org/)          | v16.12.0
+Backend           | [Node.js](https://nodejs.org/en/)         | v12.13.0 w/ [Apollo](https://www.apollographql.com/docs/apollo-server/) v2.9.13
+Query Language    | [GraphQL](https://graphql.org/)           | v14.5.8
+Database          | [PostgresQL](https://www.postgresql.org//)| v12.1                             
 
 ## react.js 
 is a front-end, open-source JavaScript library used to make developing user interfaces easier. React excels at displaying and updating data-driven components - that is, bits of your webpage that display data or rely on data. This is great for elements like charts, data tables, or any websites that display lots of changing data - for example, Facebook, Twitter, or Hackterms. React can be very fast, but is also weighty and, like any framework, can be hard to fully understand, since it abstracts away what its doing. Common alternatives are other front-end frameworks and libraries like Vue.js and AngularJS.
