@@ -5,7 +5,7 @@ A simple secured web application that allows users to maintain multiple lists of
 
 Component         | Technology                                | Version
 ---               | ---                                       | --- 
-Frontend          | [React.js](https://reactjs.org/)          | v16.12.0 q/ [TypeScript](https://www.typescriptlang.org/) v3.7.2 
+Frontend          | [React.js](https://reactjs.org/)          | v16.12.0 w/ [TypeScript](https://www.typescriptlang.org/) v3.7.2 
 Backend           | [Node.js](https://nodejs.org/en/)         | v12.13.0 w/ [Apollo](https://www.apollographql.com/docs/apollo-server/) v2.9.13
 Query Language    | [GraphQL](https://graphql.org/)           | v14.5.8
 Database          | [PostgresQL](https://www.postgresql.org//)| v12.1                             
