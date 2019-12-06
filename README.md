@@ -1,6 +1,7 @@
 # todolist-node-react-graphql
-## the NRG stack
 A simple secured web application that allows users to maintain multiple lists of tasks.
+
+## the NRG stack
 
 Component         | Technology
 ---               | ---
