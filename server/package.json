@@ -2,11 +2,20 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.ts"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.9.13",
+    "graphql": "^14.5.8"
+  },
+  "devDependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "typescript": "^3.7.3"
+  }
 }
