@@ -34,15 +34,15 @@ node app.js             # Start the Node.js server
 
 | Component      | Technology                                                                                      | Version  |
 | -------------- | ----------------------------------------------------------------------------------------------- | -------- |
-| Language       | [TypeScript](https://www.typescriptlang.org/)                                                   | v3.7.2   |
+| Language       | [JavaScript](https://www.javascript.com/)                                                       | v1.8.5   |
 | Stylesheet     | [SASS](https://sass-lang.com/)                                                                  | v1.23.7  |
 | Frontend       | [React.js](https://reactjs.org/)                                                                | v16.12.0 |
 | Backend        | [Node.js](https://nodejs.org/en/) [(Apollo)](https://www.apollographql.com/docs/apollo-server/) | v12.13.0 |
 | Query Language | [GraphQL](https://graphql.org/)                                                                 | v14.5.8  |
 | Database       | [PostgresQL](https://www.postgresql.org//)                                                      | v12.1    |
 
-## TypeScript
-is a superset of JavaScript that is written in similar syntax and compiles down to JavaScript. Advantages of using it include optional typing and the latest JavaScript features.
+## JavaScript
+is a very popular computer language used on the web. All modern browsers come with JS support, making it indispensible in web development. On the front-end, JS can be used to collect user input, process data, and draw and manipulate elements on the screen. Additionally, using Node.js, Javascript can be run on the server.
 
 ## SASS
 is a style sheet language that is compiled into CSS. It is known as "syntactic sugar" because it does not add any functionality to CSS, but makes it easier to read and write by allowing developers to use mechanisms like variables and mixins, which are not normally available in CSS. At compilation time, these are simply replaced with their values.
