@@ -9,35 +9,38 @@ const {
 const typeDefs = gql `
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type Book {
-    title: String
-    author: String
+  # This "Todo" type defines the queryable fields for every todo in our data source.
+  type Todo {
+    id: ID
+    text: String
+    completed: Boolean
   }
 
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
+  # case, the "todos" query returns an array of zero or more Todos (defined above).
   type Query {
-    books: [Book]
+    todos: [Todo]
   }
 `;
 
-const books = [{
-        title: 'Harry Potter and the Chamber of Secrets',
-        author: 'J.K. Rowling',
+const todos = [{
+        id: 1,
+        text: 'Harry Potter and the Chamber of Secrets',
+        completed: false,
     },
     {
-        title: 'Jurassic Park',
-        author: 'Michael Crichton',
+        id: 2,
+        text: 'Harry Potter',
+        completed: false,
     },
 ];
 
 // Resolvers define the technique for fetching the types defined in the
-// schema. This resolver retrieves books from the "books" array above.
+// schema. This resolver retrieves todos from the "todos" array above.
 const resolvers = {
     Query: {
-        books: () => books,
+        todos: () => todos,
     },
 };
 
