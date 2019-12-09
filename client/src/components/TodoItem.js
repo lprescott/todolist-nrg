@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 export class TodoItem extends Component {
 
+    // determine if text should be strike-through
     getStyle = () => {
         return {
             textDecoration: this.props.todo.completed ? 
