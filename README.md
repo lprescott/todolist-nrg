@@ -27,23 +27,33 @@ node app.js             # Start the Node.js server
 │
 └──[server]
    │  package.json                     # node dependencies
-   └──app.js                           # the server controller
+   └──[src]                            # Backend source files
 ```
 
-## the NRG stack
+## my NRG stack
 
-Component         | Technology                                | Version
----               | ---                                       | --- 
-Frontend          | [React.js](https://reactjs.org/)          | v16.12.0 w/ [TypeScript](https://www.typescriptlang.org/) v3.7.2 
-Backend           | [Node.js](https://nodejs.org/en/)         | v12.13.0 w/ [Apollo](https://www.apollographql.com/docs/apollo-server/) v2.9.13
-Query Language    | [GraphQL](https://graphql.org/)           | v14.5.8
-Database          | [PostgresQL](https://www.postgresql.org//)| v12.1                             
+| Component      | Technology                                                                                      | Version  |
+| -------------- | ----------------------------------------------------------------------------------------------- | -------- |
+| Language       | [TypeScript](https://www.typescriptlang.org/)                                                   | v3.7.2   |
+| Stylesheet     | [SASS](https://sass-lang.com/)                                                                  | v1.23.7  |
+| Frontend       | [React.js](https://reactjs.org/)                                                                | v16.12.0 |
+| Backend        | [Node.js](https://nodejs.org/en/) [(Apollo)](https://www.apollographql.com/docs/apollo-server/) | v12.13.0 |
+| Query Language | [GraphQL](https://graphql.org/)                                                                 | v14.5.8  |
+| Database       | [PostgresQL](https://www.postgresql.org//)                                                      | v12.1    |
+
+## TypeScript
+is a superset of JavaScript that is written in similar syntax and compiles down to JavaScript. Advantages of using it include optional typing and the latest JavaScript features.
+
+## SASS
+is a style sheet language that is compiled into CSS. It is known as "syntactic sugar" because it does not add any functionality to CSS, but makes it easier to read and write by allowing developers to use mechanisms like variables and mixins, which are not normally available in CSS. At compilation time, these are simply replaced with their values.
+
+Sass comes in two flavors, Sass and the more common SCSS (Sassy CSS). Sass uses its own syntax, while SCSS is a superset of CSS syntax, meaning any valid CSS is also valid SCSS. 
 
 ## react.js 
-is a front-end, open-source JavaScript library used to make developing user interfaces easier. React excels at displaying and updating data-driven components - that is, bits of your webpage that display data or rely on data. This is great for elements like charts, data tables, or any websites that display lots of changing data - for example, Facebook, Twitter, or Hackterms. React can be very fast, but is also weighty and, like any framework, can be hard to fully understand, since it abstracts away what its doing. Common alternatives are other front-end frameworks and libraries like Vue.js and AngularJS.
+is a front-end, open-source JavaScript library used to make developing user interfaces easier. React excels at displaying and updating data-driven components - that is, bits of your webpage that display data or rely on data. This is great for elements like charts, data tables, or any websites that display lots of changing data - for example, Facebook or Twitter. React can be very fast, but is also weighty and, like any framework, can be hard to fully understand, since it abstracts away what its doing.
 
 ## Node.js 
-is a Javascript runtime environment that allows you to run (and code with) the Javascript language outside of the browser (which traditionally shipped with JS support) - for example, on the server. Node.js forms the foundation for JS backends such as Express, Koa, Hapi, Backbone, Sails.js, and many others. It's also possible to define a server with Node without the use of these back-end frameworks.
+us an environment for server-side Javascript, allowing programmers to develop a back-end entirely in Javascript -- or in this case -- TypeScript.
 
 ### Apollo
 is a community-maintained open-source GraphQL server. It works with pretty much all Node.js HTTP server frameworks! Apollo Server works with any GraphQL schema built with GraphQL.js--so you may build your schema with that or a convenience library such as graphql-tools.
