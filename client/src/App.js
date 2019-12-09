@@ -9,28 +9,21 @@ import uuid from 'uuid';
 import './App.css';
 
 class App extends Component {
+
   state = {
-    todos: [
-      {
-        id: uuid.v4(), 
-        text: 'Take out the trash',
-        completed: false
-      },
-      {
-        id: uuid.v4(), 
-        text: 'Dinner with family',
-        completed: true
-      },
-      {
-        id: uuid.v4(), 
-        text: 'Meeting with boss',
-        completed: false
-      }
-    ]
+    todos: [ ]
+  }
+
+  componentDidMount() {
+    // TODO: get todos from server here
   }
 
   // Toggle Completed
   toggleComplete = (id) => {
+
+    // TODO: toggleComplete to graphQL
+
+    // toggleComplete to UI
     this.setState({ todos: this.state.todos.map(todo => {
       if (todo.id === id) {
         todo.completed = !todo.completed;
@@ -39,13 +32,19 @@ class App extends Component {
     }) });
   }
 
-  // Delete Todo
   deleteTodo = (id) => {
+    
+    // TODO: deleteTodo to graphQL
+
+    // deleteTodo to UI
     this.setState({ todos: this.state.todos.filter(todo => todo.id !== id) });
   }
 
-  // Update Todo
   updateTodo = (id, text) => {
+
+    // TODO: updateTodo to graphQL
+
+    // updateTodo to UI
     this.setState({ todos: this.state.todos.map(todo => {
       if (todo.id === id) {
         todo.text = text;
@@ -55,6 +54,10 @@ class App extends Component {
   }
 
   addTodo = (text) => {
+
+    // TODO: addTodo to graphQL
+
+    // addTodo to UI
     const newTodo = {
       id: uuid.v4(),
       text,

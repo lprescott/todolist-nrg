@@ -26,12 +26,12 @@ const typeDefs = gql `
 
 const todos = [{
         id: 1,
-        text: 'Harry Potter and the Chamber of Secrets',
+        text: 'Test todo 1',
         completed: false,
     },
     {
         id: 2,
-        text: 'Harry Potter',
+        text: 'Test todo 2',
         completed: false,
     },
 ];
