@@ -75,16 +75,16 @@ const resolvers = {
                 }
             }
             return null;
-        }
-        /*
+        },        
         removeTodo: (parent, args) => {
-            todos.filter(todo => {
-                todo.id != args.id;
-                if (todo.id == args.id) return true;
-            })
+            for(i = 0; i < todos.length; i++) {
+                if(todos[i].id == args.id) {
+                    todos.splice(i, 1);
+                    return true;
+                }
+            }
             return false;
         }
-        */
     },
 };
 
