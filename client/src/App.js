@@ -5,6 +5,8 @@ import Header from './components/layout/Header';
 import AddTodo from './components/AddTodo';
 import About from './components/pages/About';
 import uuid from 'uuid';
+import ApolloClient from 'apollo-boost';
+import { gql } from "apollo-boost";
 
 import './App.css';
 
@@ -15,6 +17,21 @@ class App extends Component {
 
     componentDidMount() {
         // TODO: get todos from server here
+        const client = new ApolloClient();
+
+        client
+            .query({
+            query: gql`
+                {
+                    todos {
+                        id
+                        text
+                        completed
+                    }
+                }
+            `
+            })
+            .then(result => this.setState({todos: result.data.todos}));
     }
 
     // Toggle Completed
