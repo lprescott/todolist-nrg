@@ -21,17 +21,17 @@ class App extends Component {
 
         client
             .query({
-            query: gql`
-                {
-                    todos {
-                        id
-                        text
-                        completed
+                query: gql`
+                    {
+                        todos {
+                            id
+                            text
+                            completed
+                        }
                     }
-                }
-            `
-            })
-            .then(result => this.setState({todos: result.data.todos}));
+                `
+                })
+                .then(result => this.setState({todos: result.data.todos}));
     }
 
     // Toggle Completed
