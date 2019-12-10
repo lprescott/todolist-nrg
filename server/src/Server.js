@@ -19,6 +19,10 @@ const typeDefs = gql`
     type Query {
         todos: [Todo]
     }
+
+    type Mutation {
+        post(text: String, completed: Boolean): Todo
+    }
 `;
 
 const todos = [
@@ -31,15 +35,27 @@ const todos = [
         id: 2,
         text: 'Test todo 2',
         completed: false,
-    },
+    }
 ];
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves todos from the "todos" array above.
+let todoCount = todos.length;
 const resolvers = {
     Query: {
         todos: () => todos,
     },
+    Mutation: {
+        post: (parent, args) => {
+            const todo = {
+             id: `${++todoCount}`,
+             text: args.text,
+             completed: args.completed,
+           }
+           todos.push(todo)
+           return todo
+         }
+    }
 };
 
 // The ApolloServer constructor requires two parameters: your schema
