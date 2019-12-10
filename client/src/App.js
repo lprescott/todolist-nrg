@@ -6,9 +6,19 @@ import AddTodo from './components/AddTodo';
 import About from './components/pages/About';
 import uuid from 'uuid';
 import ApolloClient from 'apollo-boost';
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
 import './App.css';
+
+const GET_TODOS = gql`
+    {
+        todos {
+            id
+            text
+            completed
+        }
+    }
+`;
 
 class App extends Component {
     state = {
@@ -21,17 +31,9 @@ class App extends Component {
 
         client
             .query({
-                query: gql`
-                    {
-                        todos {
-                            id
-                            text
-                            completed
-                        }
-                    }
-                `
-                })
-                .then(result => this.setState({todos: result.data.todos}));
+                query: GET_TODOS,
+            })
+            .then(result => this.setState({ todos: result.data.todos }));
     }
 
     // Toggle Completed
