@@ -21,7 +21,10 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        post(text: String, completed: Boolean): Todo
+        addTodo(text: String, completed: Boolean): Todo
+        updateTodo(id: ID, text: String): Todo
+        toggleCompleted(id: ID): Todo
+        removeTodo(id: ID): Boolean
     }
 `;
 
@@ -35,7 +38,7 @@ const todos = [
         id: 2,
         text: 'Test todo 2',
         completed: false,
-    }
+    },
 ];
 
 // Resolvers define the technique for fetching the types defined in the
@@ -46,16 +49,43 @@ const resolvers = {
         todos: () => todos,
     },
     Mutation: {
-        post: (parent, args) => {
+        addTodo: (parent, args) => {
             const todo = {
-             id: `${++todoCount}`,
-             text: args.text,
-             completed: args.completed,
-           }
-           todos.push(todo)
-           return todo
-         }
-    }
+                id: `${++todoCount}`,
+                text: args.text,
+                completed: args.completed,
+            };
+            todos.push(todo);
+            return todo;
+        },
+        updateTodo: (parent, args) => {
+            for(i = 0; i < todos.length; i++) {
+                if(todos[i].id == args.id) {
+                    todos[i].text = args.text;
+                    return(todos[i]);
+                }
+            }
+            return null;
+        },
+        toggleCompleted: (parent, args) => {
+            for(i = 0; i < todos.length; i++) {
+                if(todos[i].id == args.id) {
+                    todos[i].completed = !todos[i].completed;
+                    return(todos[i]);
+                }
+            }
+            return null;
+        }
+        /*
+        removeTodo: (parent, args) => {
+            todos.filter(todo => {
+                todo.id != args.id;
+                if (todo.id == args.id) return true;
+            })
+            return false;
+        }
+        */
+    },
 };
 
 // The ApolloServer constructor requires two parameters: your schema
