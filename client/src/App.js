@@ -14,7 +14,11 @@ import {
 
 const client = new ApolloClient();
 
+// Lists the todos and their respective controlling structures
+// Called from the app function
 function Todos() {
+
+    // Declare and define needed queries and manipulations
     const { loading, error, data } = useQuery(GET_TODOS);
     const [deleteTodo] = useMutation(DELETE_TODO, {
         update(cache, { data: { deleteTodo } }) {
@@ -30,13 +34,14 @@ function Todos() {
             });
         }
     });
-
     const [updateTodo] = useMutation(UPDATE_TODO);
     const [toggleTodo] = useMutation(TOGGLE_TODO);
 
+    // Catch loading and error on query
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
 
+    // map queries data to JSX
     return data.todos.map(({ id, text, completed }) => {
         let input;
         return (
@@ -49,12 +54,16 @@ function Todos() {
                 }}
             >
                 <p>
-                    <input type="checkbox" checked={completed} onChange={(e) => {
-                        e.preventDefault();
-                        toggleTodo({ variables: { id } });
-                    }}/>
                     <input
-                        className={completed ? 'text-strike' : null}
+                        type="checkbox"
+                        checked={completed}
+                        onChange={e => {
+                            e.preventDefault();
+                            toggleTodo({ variables: { id } });
+                        }}
+                    />
+                    <input
+                        className={completed ? "text-strike" : null}
                         type="text"
                         defaultValue={text}
                         ref={node => {
@@ -77,8 +86,11 @@ function Todos() {
     });
 }
 
+// Created the react component to add a new todo
+// Called from the app function
 function AddTodo() {
-    let input;
+
+    // Declare and define needed manipulation
     const [addTodo] = useMutation(ADD_TODO, {
         update(cache, { data: { addTodo } }) {
             const { todos } = client.readQuery({ query: GET_TODOS });
@@ -89,6 +101,8 @@ function AddTodo() {
         }
     });
 
+    // map to JSX
+    let input;
     return (
         <form
             className="addTodo"
@@ -111,6 +125,8 @@ function AddTodo() {
     );
 }
 
+// The app that uses an apollo provider and the above AddTodo and 
+// Todo components
 const App = () => {
     return (
         <ApolloProvider client={client}>
