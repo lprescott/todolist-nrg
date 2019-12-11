@@ -22,23 +22,31 @@ function Todos() {
   if (error) return <p>Error :(</p>;
 
   return data.todos.map(({ id, text, completed }) => (
-    <div key={id}>
+    <div class="todo" key={id}>
       <p>
-        {text}: {(completed) ? 'yes' : 'no'}
+        {(completed) ? 'done:' : 'todo'} {text}
       </p>
     </div>
   ));
 }
 
+function AddTodo() {
+  return (
+    <div class="addTodo">
+      <input type="text" placeholder="Add a new todo..."/>
+      <button type="submit">Submit</button>
+    </div>
+  )
+}
+
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <div>
-        <h2>My first Apollo app 
-          <span aria-label="rocket-emoji" role="img">🚀</span>
-        </h2>
-        <Todos />
-      </div>
+      <h2>My first Apollo app 
+        <span aria-label="rocket-emoji" role="img">🚀</span>
+      </h2>
+      <AddTodo />
+      <Todos />
     </ApolloProvider>
   );
 }
