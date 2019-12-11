@@ -1,3 +1,6 @@
+//TODO: https://github.com/cvburgess/SQLDataSource 
+//TODO: https://www.apollographql.com/docs/apollo-server/data/data-sources/#community-data-sources 
+
 const { ApolloServer, gql } = require("apollo-server");
 
 // the data types, return types, and response types
