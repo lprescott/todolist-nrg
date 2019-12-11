@@ -31,26 +31,45 @@ function Todos() {
         }
     });
 
+    const [updateTodo] = useMutation(UPDATE_TODO);
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
 
-    return data.todos.map(({ id, text, completed }) => (
-        <form className="todo" key={"todo-" + id}>
-            <p>
-                {completed ? "done:" : "todo"}
-                <input type="text" defaultValue={text} />
-                <button type="reset">Reset</button>
-                <button
-                    type="reset"
-                    onClick={() => {
-                        deleteTodo({ variables: { id: id } });
-                    }}
-                >
-                    Delete
-                </button>
-            </p>
-        </form>
-    ));
+    return data.todos.map(({ id, text, completed }) => {
+        let input;
+        return (
+            <form
+                className="todo"
+                key={"todo-" + id}
+                onSubmit={e => {
+                    e.preventDefault();
+                    updateTodo({ variables: { id, text: input.value } });
+                }}
+            >
+                <p>
+                    {completed ? "done:" : "todo"}
+                    <input
+                        type="text"
+                        defaultValue={text}
+                        ref={node => {
+                            input = node;
+                        }}
+                    />
+                    <button type="submit">Submit</button>
+                    <button type="reset">Reset</button>
+                    <button
+                        type="reset"
+                        onClick={() => {
+                            deleteTodo({ variables: { id: id } });
+                        }}
+                    >
+                        Delete
+                    </button>
+                </p>
+            </form>
+        );
+    });
 }
 
 function AddTodo() {
