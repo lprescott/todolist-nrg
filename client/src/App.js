@@ -33,6 +33,51 @@ const ADD_TODO = gql`
     }
 `;
 
+const UPDATE_TODO = gql`
+    mutation addTodo($id: String!, $text: String!) {
+        updateTodo(id: $id, text: $text) {
+            code
+            success
+            message
+            todo {
+                id
+                text
+                completed
+            }
+        }
+    }
+`;
+
+const TOGGLE_TODO = gql`
+    mutation addTodo($id: String!) {
+        toggleTodo(id: $id) {
+            code
+            success
+            message
+            todo {
+                id
+                text
+                completed
+            }
+        }
+    }
+`;
+
+const DELETE_TODO = gql`
+    mutation deleteTodo($id: String!) {
+        deleteTodo(id: $id) {
+            code
+            success
+            message
+            todo {
+                id
+                text
+                completed
+            }
+        }
+    }
+`;
+
 function Todos() {
     const { loading, error, data } = useQuery(GET_TODOS);
 
