@@ -56,7 +56,7 @@ export const TOGGLE_TODO = gql`
 `;
 
 export const DELETE_TODO = gql`
-    mutation deleteTodo($id: String!) {
+    mutation deleteTodo($id: ID!) {
         deleteTodo(id: $id) {
             code
             success

@@ -16,16 +16,27 @@ const client = new ApolloClient();
 
 function Todos() {
     const { loading, error, data } = useQuery(GET_TODOS);
+    const [deleteTodo] = useMutation(DELETE_TODO);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
 
     return data.todos.map(({ id, text, completed }) => (
-        <div className="todo" key={"todo-" + id}>
+        <form className="todo" key={"todo-" + id}>
             <p>
-                {completed ? "done:" : "todo"} {text}
+                {completed ? "done:" : "todo"}
+                <input type="text" defaultValue={text} />
+                <button type="reset">Reset</button>
+                <button
+                    type="reset"
+                    onClick={() => {
+                        deleteTodo({ variables: { id: id } });
+                    }}
+                >
+                    Delete
+                </button>
             </p>
-        </div>
+        </form>
     ));
 }
 
@@ -51,6 +62,7 @@ function AddTodo() {
             }}
         >
             <input
+                required
                 type="text"
                 placeholder="Add a new todo..."
                 ref={node => {
