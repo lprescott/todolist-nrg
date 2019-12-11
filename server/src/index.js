@@ -1,5 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 
+// the data types, return types, and response types
 const typeDefs = gql`
   interface MutationResponse {
     code: String!
@@ -63,12 +64,14 @@ var todos = [
   }
 ];
 
-// how to fetch the data (hard-coded)
+// how to fetch and work with the data (hard-coded)
 let todoCount = todos.length;
 const resolvers = {
+  // get
   Query: {
     todos: () => todos
   },
+  // put, post, delete
   Mutation: {
     addTodo: (parent, args) => {
       const todo = {
@@ -155,6 +158,11 @@ const resolvers = {
         success: false,
         message: "Could not find todo."
       };
+    }
+  },
+  MutationResponse: {
+    __resolveType() {
+      return null;
     }
   }
 };
