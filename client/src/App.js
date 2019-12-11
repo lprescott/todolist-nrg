@@ -32,6 +32,7 @@ const ADD_TODO = gql`
         }
     }
 `;
+
 function Todos() {
     const { loading, error, data } = useQuery(GET_TODOS);
 
@@ -49,7 +50,20 @@ function Todos() {
 
 function AddTodo() {
     let input;
-    const [addTodo, { data }] = useMutation(ADD_TODO);
+    const [addTodo] = useMutation(ADD_TODO, {
+        update(
+          cache,
+          {
+            data: { addTodo }
+          }
+        ) {
+          const { todos } = client.readQuery({ query: GET_TODOS });
+          client.writeQuery({
+            query: GET_TODOS,
+            data: { todos: todos.concat([addTodo.todo]) }
+          });
+        }
+      });
 
     return (
         <form
