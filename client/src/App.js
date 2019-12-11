@@ -32,6 +32,7 @@ function Todos() {
     });
 
     const [updateTodo] = useMutation(UPDATE_TODO);
+    const [toggleTodo] = useMutation(TOGGLE_TODO);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
@@ -48,8 +49,12 @@ function Todos() {
                 }}
             >
                 <p>
-                    {completed ? "done:" : "todo"}
+                    <input type="checkbox" checked={completed} onChange={(e) => {
+                        e.preventDefault();
+                        toggleTodo({ variables: { id } });
+                    }}/>
                     <input
+                        className={completed ? 'text-strike' : null}
                         type="text"
                         defaultValue={text}
                         ref={node => {
