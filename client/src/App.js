@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { gql } from "apollo-boost";
 
 const GET_TODOS = gql`
   query {
