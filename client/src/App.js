@@ -23,7 +23,7 @@ function Todos() {
     if (error) return <p>Error :(</p>;
 
     return data.todos.map(({ id, text, completed }) => (
-        <div class="todo" id={"todo-" + id}>
+        <div className="todo" key={"todo-" + id}>
             <p>
                 {completed ? "done:" : "todo"} {text}
             </p>
@@ -52,7 +52,7 @@ function AddTodo() {
 
     return (
         <form
-            class="addTodo"
+            className="addTodo"
             onSubmit={e => {
                 e.preventDefault();
                 addTodo({ variables: { text: input.value } });
