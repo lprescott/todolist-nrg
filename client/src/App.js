@@ -2,6 +2,16 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+const GET_TODOS = gql`
+  query {
+    todos {
+      id
+      text
+      completed
+    }
+  }
+`;
+
 function App() {
   return (
     <div className="App">
