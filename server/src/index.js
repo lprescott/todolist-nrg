@@ -86,21 +86,26 @@ const resolvers = {
     },
     deleteTodo: (parent, args) => {
       let flag = false;
+      let deleted;
       todos = todos.filter(todo => {
         if (todo.id != args.id) return todo;
-        else flag = true;
+        else { flag = true; deleted = todo;}
       });
       if (flag == true) {
         return {
           code: "200",
           success: true,
-          message: "Successfully deleted todo."
+          message: "Successfully deleted todo.",
+          todo: deleted
         };
       } else {
         return {
           code: "404",
           success: false,
-          message: "Could not find todo."
+          message: "Could not find todo.",
+          todo: {
+            id: args.id
+          }
         };
       }
     },

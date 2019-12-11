@@ -16,7 +16,20 @@ const client = new ApolloClient();
 
 function Todos() {
     const { loading, error, data } = useQuery(GET_TODOS);
-    const [deleteTodo] = useMutation(DELETE_TODO);
+    const [deleteTodo] = useMutation(DELETE_TODO, {
+        update(cache, { data: { deleteTodo } }) {
+            const { todos } = client.readQuery({ query: GET_TODOS });
+            client.writeQuery({
+                query: GET_TODOS,
+                data: {
+                    todos: todos.filter(todo => {
+                        if (todo.id !== deleteTodo.todo.id) return true;
+                        else return false;
+                    })
+                }
+            });
+        }
+    });
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
