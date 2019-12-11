@@ -8,16 +8,32 @@ import { useMutation } from "@apollo/react-hooks";
 
 const client = new ApolloClient();
 
-function Todos() {
-    const { loading, error, data } = useQuery(gql`
-        {
-            todos {
+const GET_TODOS = gql`
+    query GetTodos {
+        todos {
+            id
+            text
+            completed
+        }
+    }
+`;
+
+const ADD_TODO = gql`
+    mutation addTodo($text: String!) {
+        addTodo(text: $text) {
+            code
+            success
+            message
+            todo {
                 id
                 text
                 completed
             }
         }
-    `);
+    }
+`;
+function Todos() {
+    const { loading, error, data } = useQuery(GET_TODOS);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
@@ -32,21 +48,6 @@ function Todos() {
 }
 
 function AddTodo() {
-    const ADD_TODO = gql`
-        mutation addTodo($text: String!) {
-            addTodo(text: $text) {
-                code
-                success
-                message
-                todo {
-                    id
-                    text
-                    completed
-                }
-            }
-        }
-    `;
-
     let input;
     const [addTodo, { data }] = useMutation(ADD_TODO);
 
@@ -56,7 +57,7 @@ function AddTodo() {
             onSubmit={e => {
                 e.preventDefault();
                 addTodo({ variables: { text: input.value } });
-                input.value = '';
+                input.value = "";
             }}
         >
             <input
