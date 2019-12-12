@@ -130,28 +130,20 @@ const resolvers = {
     },
     updateTodo: (parent, args) => {
 
-      return knex('todos').where('id', args.id).update('text', args.text).returning('completed')
-        .then((complete) => {
+      return knex('todos').where('id', args.id).update('text', args.text).returning('*')
+        .then((response) => {
           return {
             code: "200",
             success: true,
             message: "Successfully update todo.",
-            todo: {
-              id: args.id,
-              text: args.text,
-              completed: complete[0]
-            }
+            todo: response[0]
           };
         }).catch((error) => {
           return {
             code: "500",
             success: false,
             message: error,
-            todo: {
-              id: args.id,
-              text: args.text,
-              completed: complete[0]
-            }
+            todo: response[0]
           };
         });
     },
