@@ -172,7 +172,7 @@ const resolvers = {
           };
         }).catch((error) => {
           return {
-            code: "404",
+            code: "500",
             success: false,
             message: error,
             todo: {
@@ -183,7 +183,40 @@ const resolvers = {
         });
     },
     toggleTodo: (parent, args) => {
-      
+
+      return knex.select().from('todos').where('id', args.id)
+        .then((todo) => {
+          return knex('todos').where('id', args.id).update('completed', !todo[0].completed)
+            .then(() => {
+              return {
+                code: "200",
+                success: true,
+                message: "Successfully toggled todo",
+                todo: {
+                  id: args.id,
+                  completed: !todo[0].completed
+                }
+              }
+            }).catch((error) => {
+              return {
+                code: "500",
+                success: false,
+                message: error,
+                todo: {
+                  id: args.id
+                }
+              }
+            })
+        }).catch((error) => {
+          return {
+            code: "500",
+            success: false,
+            message: error,
+            todo: {
+              id: args.id
+            }
+          };
+        });
     }
   },
   MutationResponse: {
