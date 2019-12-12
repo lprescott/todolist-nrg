@@ -75,7 +75,7 @@ const resolvers = {
   // get
   Query: {
     todos: () => {
-      return knex.select().from('todos');
+      return knex.select().from('todos').orderBy('id', 'asc');
     }
   },
   // put, post, delete
