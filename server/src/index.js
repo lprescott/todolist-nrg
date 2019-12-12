@@ -3,6 +3,34 @@
 
 const { ApolloServer, gql } = require("apollo-server");
 
+var knex = require('knex')({
+  client: 'pg',
+  connection: {
+    host : 'localhost',
+    user : 'test_user',
+    password : 'test_code',
+    database : 'test_db',
+    port: '5432'
+  }
+});
+
+// Create a table
+knex.schema
+  .hasTable('todos').then(function(exists) {
+    if (!exists) {
+      return knex.schema.createTable('todos', function(table) {
+        table.increments('id');
+        table.string('text');
+        table.boolean(('completed'));
+      });
+    }
+  })
+
+  // Finally, add a .catch handler for the promise chain
+  .catch(function(e) {
+    console.error(e);
+  });
+
 // the data types, return types, and response types
 const typeDefs = gql`
   interface MutationResponse {
