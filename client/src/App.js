@@ -11,7 +11,7 @@ import {
     TOGGLE_TODO,
     DELETE_TODO
 } from "./TodoQueries.js";
-import { Button, Checkbox, TextField, Container } from "@material-ui/core";
+import { Button, Checkbox, TextField, Container, ButtonGroup } from "@material-ui/core";
 
 const client = new ApolloClient();
 
@@ -58,6 +58,26 @@ function Todos() {
                 }}
             >
                 <div>
+                    <ButtonGroup size="large">
+                        <Button variant="contained" color="primary" type="submit">
+                            Submit
+                        </Button>
+                        <Button variant="contained" type="reset">
+                            Reset
+                        </Button>
+                        <Button
+                            color="secondary"
+                            variant="contained"
+                            type="reset"
+                            onClick={() => {
+                                deleteTodo({ variables: { id: id } });
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </ButtonGroup>
+                </div>
+                <div>
                     <Checkbox
                         checked={completed}
                         onChange={e => {
@@ -66,26 +86,15 @@ function Todos() {
                         }}
                     />
                     <TextField
+                        variant="outlined"
+                        size="small"
                         className={completed ? "text-strike" : null}
                         type="text"
                         defaultValue={text}
                         name="updateTodo"
+                        autoComplete="off"
                     />
-                    <Button variant="contained" type="submit">
-                        Submit
-                    </Button>
-                    <Button variant="contained" type="reset">
-                        Reset
-                    </Button>
-                    <Button
-                        variant="contained"
-                        type="reset"
-                        onClick={() => {
-                            deleteTodo({ variables: { id: id } });
-                        }}
-                    >
-                        Delete
-                    </Button>
+
                 </div>
             </form>
         );
@@ -130,12 +139,16 @@ function AddTodo() {
                 }}
             >
                 <TextField
+                    id="newTodo"
+                    label="A new task"
                     required
                     type="text"
                     name="newTodo"
-                    placeholder="Add a new todo..."
-                />
-                <Button variant="contained" type="submit">
+                    variant="outlined"
+                    size="small"
+                    autoComplete="off"
+                /> {' '}
+                <Button size="large" variant="contained" type="submit" color="primary">
                     Submit
                 </Button>
             </form>
