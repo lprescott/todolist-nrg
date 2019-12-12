@@ -3,6 +3,7 @@
 
 const { ApolloServer, gql } = require("apollo-server");
 
+// create connection to database
 var knex = require('knex')({
   client: 'pg',
   connection: {
@@ -100,7 +101,9 @@ let todoCount = todos.length;
 const resolvers = {
   // get
   Query: {
-    todos: () => todos
+    todos: () => {
+      return knex.select().from('todos');
+    }
   },
   // put, post, delete
   Mutation: {
