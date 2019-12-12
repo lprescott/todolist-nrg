@@ -11,13 +11,13 @@ import {
     TOGGLE_TODO,
     DELETE_TODO
 } from "./TodoQueries.js";
+import { Button, Checkbox, TextField, Container } from "@material-ui/core";
 
 const client = new ApolloClient();
 
 // Lists the todos and their respective controlling structures
 // Called from the app function
 function Todos() {
-
     // Declare and define needed queries and manipulations
     const { loading, error, data } = useQuery(GET_TODOS);
     const [deleteTodo] = useMutation(DELETE_TODO, {
@@ -43,44 +43,50 @@ function Todos() {
 
     // map queries data to JSX
     return data.todos.map(({ id, text, completed }) => {
-        let input;
         return (
             <form
                 className="todo"
                 key={"todo-" + id}
                 onSubmit={e => {
                     e.preventDefault();
-                    updateTodo({ variables: { id, text: input.value } });
+                    updateTodo({
+                        variables: {
+                            id,
+                            text: e.currentTarget.elements.updateTodo.value
+                        }
+                    });
                 }}
             >
-                <p>
-                    <input
-                        type="checkbox"
+                <div>
+                    <Checkbox
                         checked={completed}
                         onChange={e => {
                             e.preventDefault();
                             toggleTodo({ variables: { id } });
                         }}
                     />
-                    <input
+                    <TextField
                         className={completed ? "text-strike" : null}
                         type="text"
                         defaultValue={text}
-                        ref={node => {
-                            input = node;
-                        }}
+                        name="updateTodo"
                     />
-                    <button type="submit">Submit</button>
-                    <button type="reset">Reset</button>
-                    <button
+                    <Button variant="contained" type="submit">
+                        Submit
+                    </Button>
+                    <Button variant="contained" type="reset">
+                        Reset
+                    </Button>
+                    <Button
+                        variant="contained"
                         type="reset"
                         onClick={() => {
                             deleteTodo({ variables: { id: id } });
                         }}
                     >
                         Delete
-                    </button>
-                </p>
+                    </Button>
+                </div>
             </form>
         );
     });
@@ -89,7 +95,6 @@ function Todos() {
 // Created the react component to add a new todo
 // Called from the app function
 function AddTodo() {
-
     // Declare and define needed manipulation
     const [addTodo] = useMutation(ADD_TODO, {
         update(cache, { data: { addTodo } }) {
@@ -102,42 +107,51 @@ function AddTodo() {
     });
 
     // map to JSX
-    let input;
     return (
-        <form
-            className="addTodo"
-            onSubmit={e => {
-                e.preventDefault();
-                addTodo({ variables: { text: input.value } });
-                input.value = "";
-            }}
-        >
-            <input
-                required
-                type="text"
-                placeholder="Add a new todo..."
-                ref={node => {
-                    input = node;
+        <div>
+            <div className="header">
+                <h2>
+                    A Todolist in the eNeRGy stack.{" "}
+                    <span aria-label="rocket-emoji" role="img">
+                        🚀
+                    </span>
+                </h2>
+                <p>Node.js, React.js and GraphQL</p>
+            </div>
+            <form
+                className="addTodo"
+                onSubmit={e => {
+                    e.preventDefault();
+                    addTodo({
+                        variables: {
+                            text: e.currentTarget.elements.newTodo.value
+                        }
+                    });
                 }}
-            />
-            <button type="submit">Submit</button>
-        </form>
+            >
+                <TextField
+                    required
+                    type="text"
+                    name="newTodo"
+                    placeholder="Add a new todo..."
+                />
+                <Button variant="contained" type="submit">
+                    Submit
+                </Button>
+            </form>
+        </div>
     );
 }
 
-// The app that uses an apollo provider and the above AddTodo and 
+// The app that uses an apollo provider and the above AddTodo and
 // Todo components
 const App = () => {
     return (
         <ApolloProvider client={client}>
-            <h2>
-                My first Apollo app
-                <span aria-label="rocket-emoji" role="img">
-                    🚀
-                </span>
-            </h2>
-            <AddTodo />
-            <Todos />
+            <Container maxWidth="sm">
+                <AddTodo />
+                <Todos />
+            </Container>
         </ApolloProvider>
     );
 };
