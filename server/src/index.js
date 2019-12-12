@@ -1,25 +1,28 @@
 //TODO: https://github.com/cvburgess/SQLDataSource 
 //TODO: https://www.apollographql.com/docs/apollo-server/data/data-sources/#community-data-sources 
 
-const { ApolloServer, gql } = require("apollo-server");
+const {
+  ApolloServer,
+  gql
+} = require("apollo-server");
 
 // create connection to database
 var knex = require('knex')({
   client: 'pg',
   connection: {
-    host : 'localhost',
-    user : 'test_user',
-    password : 'test_code',
-    database : 'test_db',
+    host: 'localhost',
+    user: 'test_user',
+    password: 'test_code',
+    database: 'test_db',
     port: '5432'
   }
 });
 
 // Create a table
 knex.schema
-  .hasTable('todos').then(function(exists) {
+  .hasTable('todos').then(function (exists) {
     if (!exists) {
-      return knex.schema.createTable('todos', function(table) {
+      return knex.schema.createTable('todos', function (table) {
         table.increments('id');
         table.string('text');
         table.boolean(('completed'));
@@ -28,12 +31,12 @@ knex.schema
   })
 
   // Finally, add a .catch handler for the promise chain
-  .catch(function(e) {
+  .catch(function (e) {
     console.error(e);
   });
 
 // the data types, return types, and response types
-const typeDefs = gql`
+const typeDefs = gql `
   interface MutationResponse {
     code: String!
     success: Boolean!
@@ -68,8 +71,7 @@ const typeDefs = gql`
 `;
 
 // the todos list
-var todos = [
-  {
+var todos = [{
     id: 1,
     text: "Take out the trash!",
     completed: false
@@ -108,90 +110,80 @@ const resolvers = {
   // put, post, delete
   Mutation: {
     addTodo: (parent, args) => {
-      const todo = {
-        id: ++todoCount,
+
+      let todo = {
         text: args.text,
         completed: false
       };
-      todos.push(todo);
-      return {
-        code: "200",
-        success: true,
-        message: "Successfully added todo.",
-        todo
-      };
-    },
-    deleteTodo: (parent, args) => {
-      let flag = false;
-      let deleted;
-      todos = todos.filter(todo => {
-        if (todo.id != args.id) return todo;
-        else { flag = true; deleted = todo;}
-      });
-      if (flag == true) {
-        return {
-          code: "200",
-          success: true,
-          message: "Successfully deleted todo.",
-          todo: deleted
-        };
-      } else {
-        return {
-          code: "404",
-          success: false,
-          message: "Could not find todo.",
-          todo: {
-            id: args.id
-          }
-        };
-      }
-    },
-    updateTodo: (parent, args) => {
-      for (var i = 0; i < todos.length; i++) {
-        if (todos[i].id == args.id) {
-          const todo = todos[i];
-          if (todos[i].text == args.text) {
-            return {
-              code: "304",
-              success: false,
-              message: "No change.",
-              todo
-            };
-          } else {
-            todos[i].text = args.text;
-            return {
-              code: "200",
-              success: true,
-              message: "Successfully updated todo.",
-              todo
-            };
-          }
-        }
-      }
-      return {
-        code: "404",
-        success: false,
-        message: "Could not find todo."
-      };
-    },
-    toggleTodo: (parent, args) => {
-      for (var i = 0; i < todos.length; i++) {
-        if (todos[i].id == args.id) {
-          const todo = todos[i];
-          todos[i].completed = !todos[i].completed;
+
+      return knex('todos').insert(todo, 'id')
+        .then((id) => {
+          todo.id = id[0];
           return {
             code: "200",
             success: true,
-            message: "Successfully updated todo.",
+            message: "Successfully added todo.",
             todo
           };
-        }
-      }
-      return {
-        code: "404",
-        success: false,
-        message: "Could not find todo."
-      };
+        }).catch((error) => {
+          return {
+            code: "500",
+            success: false,
+            message: error,
+            todo
+          };
+        });
+    },
+    deleteTodo: (parent, args) => {
+
+      return knex('todos').where('id', args.id).del()
+        .then(() => {
+          return {
+            code: "200",
+            success: true,
+            message: "Successfully deleted todo.",
+            todo: {
+              id: args.id
+            }
+          };
+        }).catch((error) => {
+          return {
+            code: "500",
+            success: false,
+            message: "Could not delete todo.",
+            todo: {
+              id: args.id
+            }
+          };
+        });
+    },
+    updateTodo: (parent, args) => {
+
+      return knex('todos').where('id', args.id).update('text', args.text)
+        .then(() => {
+          return {
+            code: "200",
+            success: true,
+            message: "Successfully update todo.",
+            todo: {
+              id: args.id,
+              text: args.text
+            }
+          };
+        }).catch((error) => {
+          return {
+            code: "404",
+            success: false,
+            message: error,
+            todo: {
+              id: args.id,
+              text: args.text
+            }
+          };
+        });
+    },
+    toggleTodo: (parent, args) => {
+      
     }
   },
   MutationResponse: {
@@ -202,8 +194,13 @@ const resolvers = {
 };
 
 // create new server with the above typeDefs and resolvers
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers
+});
 
-server.listen().then(({ url }) => {
+server.listen().then(({
+  url
+}) => {
   console.log(`Server ready at ${url}graphql`);
 });
