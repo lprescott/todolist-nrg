@@ -70,36 +70,7 @@ const typeDefs = gql `
   }
 `;
 
-// the todos list
-var todos = [{
-    id: 1,
-    text: "Take out the trash!",
-    completed: false
-  },
-  {
-    id: 2,
-    text: "Learn the energy stack.",
-    completed: true
-  },
-  {
-    id: 3,
-    text: "Full 8 hours.",
-    completed: false
-  },
-  {
-    id: 4,
-    text: "Clean room.",
-    completed: false
-  },
-  {
-    id: 5,
-    text: "Practice guitar.",
-    completed: true
-  }
-];
-
-// how to fetch and work with the data (hard-coded)
-let todoCount = todos.length;
+// how to fetch and work with the data
 const resolvers = {
   // get
   Query: {
