@@ -11,10 +11,10 @@ import {
     TOGGLE_TODO,
     DELETE_TODO
 } from "./TodoQueries.js";
-import { Button, Checkbox, TextField, Container, ButtonGroup, Grid, Paper, CircularProgress } from "@material-ui/core";
+import { Button, Checkbox, TextField, Container, Grid, Paper, CircularProgress, Divider } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content'
+import withReactContent from 'sweetalert2-react-content';
 
 const client = new ApolloClient();
 
@@ -24,18 +24,100 @@ const useStyles = makeStyles(theme => ({
     },
     paper: {
         padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
+        textAlign: 'center'
     },
-    item: {
+    card: {
         flexGrow: "inherit",
     },
     loading: {
         position: "absolute",
         left: "50%",
         top: "250px",
+    },
+    newTodoInput: {
+        width: "calc(100% - 118px)",
+        paddingRight: "16px",
+    },
+    todoItemInput: {
+        width: "calc(100% - 176px)",
+        paddingRight: "16px",
+        paddingLeft: "16px",
+    },
+    left: {
+        textAlign: "left",
+    },
+    right: {
+        float: "right",
+    },
+    divider: {
+        marginBottom: "16px",
+        marginTop: "16px",
+        marginLeft: "-16px",
+        marginRight: "-16px"
     }
 }));
+
+// Created the react component to add a new todo
+// Called from the app function
+function AddTodo() {
+
+    // Declare and define needed manipulation
+    const [addTodo] = useMutation(ADD_TODO, {
+        update(cache, { data: { addTodo } }) {
+            const { todos } = client.readQuery({ query: GET_TODOS });
+            client.writeQuery({
+                query: GET_TODOS,
+                data: { todos: todos.concat([addTodo.todo]) }
+            });
+        }
+    });
+
+    // get styles from above useStyles method
+    const classes = useStyles();
+
+    // map to JSX
+    return (
+        <Grid item className={classes.card}>
+            <Paper className={classes.paper}>
+                <h2>
+                    A Todolist in the eNeRGy stack.{" "}
+                    <span aria-label="rocket-emoji" role="img">
+                        🚀
+                    </span>
+                </h2>
+                <h4>Node.js, React.js and GraphQL</h4>
+                <p>Material-UI, Apollo, Knex and PostgresQL</p>
+                <Divider variant="fullWidth" className={classes.divider}/>
+                <form
+                    onSubmit={e => {
+                        e.preventDefault();
+                        addTodo({
+                            variables: {
+                                text: e.currentTarget.elements.newTodo.value
+                            }
+                        });
+                        e.currentTarget.elements.newTodo.value = null;
+                    }}
+                >
+                    <TextField
+                        required
+                        className={classes.newTodoInput}
+                        id="newTodo"
+                        label="A new task"
+                        type="text"
+                        name="newTodo"
+                        variant="outlined"
+                        size="small"
+                        autoComplete="off"
+                    />
+                    <Button size="large" variant="contained" type="submit" color="primary">
+                        Submit
+                    </Button>
+                </form>
+            </Paper>
+        </Grid>
+    );
+}
 
 // Lists the todos and their respective controlling structures
 // Called from the app function
@@ -84,7 +166,7 @@ function Todos() {
     return data.todos.map(({ id, text, completed }) => {
 
         return (
-            <Grid className={classes.item} item key={"todo-grid-item-" + id}>
+            <Grid item className={classes.card}  key={"todo-grid-item-" + id}>
                 <Paper className={classes.paper}>
                     <form
                         key={"todo-" + id}
@@ -98,26 +180,26 @@ function Todos() {
                             });
                         }}
                     >
-
-                        <ButtonGroup size="large">
-                            <Button variant="contained" color="primary" type="submit">
-                                Submit
+                        <div>
+                            <div className={classes.left}>
+                                <Button type="reset" size="large">
+                                    reset
                                 </Button>
-                            <Button variant="contained" type="reset">
-                                Reset
+                                <span className={classes.right}>
+                                    <Button
+                                        color="secondary"
+                                        type="reset"
+                                        size="large"
+                                        onClick={() => {
+                                            deleteTodo({ variables: { id: id } });
+                                        }}
+                                    >
+                                        Delete
                                 </Button>
-                            <Button
-                                color="secondary"
-                                variant="contained"
-                                type="reset"
-                                onClick={() => {
-                                    deleteTodo({ variables: { id: id } });
-                                }}
-                            >
-                                Delete
-                                </Button>
-                        </ButtonGroup>
-
+                                </span>
+                            </div>
+                        </div>
+                        <Divider variant="fullWidth" className={classes.divider}/>
                         <div>
                             <Checkbox
                                 checked={completed}
@@ -130,76 +212,21 @@ function Todos() {
                                 required
                                 variant="outlined"
                                 size="small"
-                                className={completed ? "text-strike" : null}
+                                className={`${classes.todoItemInput} ${completed ? 'text-strike' : ''}`}
                                 type="text"
                                 defaultValue={text}
                                 name="updateTodo"
                                 autoComplete="off"
                             />
+                            <Button variant="contained" color="primary" type="submit" size="large">
+                                Submit
+                            </Button>
                         </div>
                     </form>
                 </Paper>
             </Grid>
         );
     });
-}
-
-// Created the react component to add a new todo
-// Called from the app function
-function AddTodo() {
-
-    // Declare and define needed manipulation
-    const [addTodo] = useMutation(ADD_TODO, {
-        update(cache, { data: { addTodo } }) {
-            const { todos } = client.readQuery({ query: GET_TODOS });
-            client.writeQuery({
-                query: GET_TODOS,
-                data: { todos: todos.concat([addTodo.todo]) }
-            });
-        }
-    });
-
-    // get styles from above useStyles method
-    const classes = useStyles();
-
-    // map to JSX
-    return (
-        <Grid className={classes.item} item>
-            <Paper className={classes.paper}>
-                <h2>
-                    A Todolist in the eNeRGy stack.{" "}
-                    <span aria-label="rocket-emoji" role="img">
-                        🚀
-                    </span>
-                </h2>
-                <p>Node.js, React.js and GraphQL</p>
-                <form
-                    onSubmit={e => {
-                        e.preventDefault();
-                        addTodo({
-                            variables: {
-                                text: e.currentTarget.elements.newTodo.value
-                            }
-                        });
-                    }}
-                >
-                    <TextField
-                        required
-                        id="newTodo"
-                        label="A new task"
-                        type="text"
-                        name="newTodo"
-                        variant="outlined"
-                        size="small"
-                        autoComplete="off"
-                    />
-                    <Button size="large" variant="contained" type="submit" color="primary">
-                        Submit
-                    </Button>
-                </form>
-            </Paper>
-        </Grid>
-    );
 }
 
 // The app that uses an apollo provider and the above AddTodo and
