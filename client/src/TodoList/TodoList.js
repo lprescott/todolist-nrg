@@ -12,7 +12,6 @@ import {
     DELETE_TODO
 } from "./TodoListQueries.js";
 import { Button, Checkbox, TextField, Container, Grid, Paper, CircularProgress, Divider } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useStyles } from "./TodoListStyles";
