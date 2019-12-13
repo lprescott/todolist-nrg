@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./TodoList.css";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { useQuery } from "@apollo/react-hooks";
@@ -10,7 +10,7 @@ import {
     UPDATE_TODO,
     TOGGLE_TODO,
     DELETE_TODO
-} from "./TodoQueries.js";
+} from "./TodoListQueries.js";
 import { Button, Checkbox, TextField, Container, Grid, Paper, CircularProgress, Divider } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2';
@@ -234,7 +234,7 @@ function Todos() {
 
 // The app that uses an apollo provider and the above AddTodo and
 // Todo components
-const App = () => {
+const TodoList = () => {
 
     // get styles from above useStyles method
     const classes = useStyles();
@@ -251,4 +251,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default TodoList;
