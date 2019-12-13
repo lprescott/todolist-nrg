@@ -15,50 +15,9 @@ import { Button, Checkbox, TextField, Container, Grid, Paper, CircularProgress, 
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { useStyles } from "./TodoListStyles";
 
 const client = new ApolloClient();
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center'
-    },
-    card: {
-        flexGrow: "inherit",
-    },
-    loading: {
-        position: "absolute",
-        left: "50%",
-        top: "250px",
-    },
-    newTodoInput: {
-        width: "calc(100% - 118px)",
-        paddingRight: "16px",
-    },
-    todoItemInput: {
-        width: "calc(100% - 176px)",
-        paddingRight: "16px",
-        paddingLeft: "16px",
-    },
-    left: {
-        textAlign: "left",
-    },
-    right: {
-        float: "right",
-    },
-    divider: {
-        marginBottom: "16px",
-        marginTop: "16px",
-        marginLeft: "-16px",
-        marginRight: "-16px"
-    },
-    container: {
-        paddingTop: "16px"
-    }
-}));
 
 // Created the react component to add a new todo
 // Called from the app function
