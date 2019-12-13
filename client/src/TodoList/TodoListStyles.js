@@ -14,7 +14,8 @@ export const useStyles = makeStyles(theme => ({
     loading: {
         position: "absolute",
         left: "50%",
-        top: "250px",
+        top: "300px",
+        marginLeft: "-25px;"
     },
     newTodoInput: {
         width: "calc(100% - 118px)",

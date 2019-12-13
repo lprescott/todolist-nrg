@@ -18,6 +18,15 @@ import { useStyles } from "./TodoListStyles";
 
 const client = new ApolloClient();
 
+function handleResponse(response) {
+    if (response.success === true) {
+        console.log('success');
+    } else {
+        console.log('error');
+    }
+    console.log(response);
+}
+
 // Created the react component to add a new todo
 // Called from the app function
 function AddTodo() {
@@ -56,7 +65,12 @@ function AddTodo() {
                             variables: {
                                 text: e.currentTarget.elements.newTodo.value
                             }
+                        }).then((response) => {
+                            handleResponse(response.data.addTodo);
+                        }).catch((error) => {
+                            console.log('An unexpected error occurred: ' + error);
                         });
+
                         e.currentTarget.elements.newTodo.value = null;
                     }}
                 >
@@ -138,6 +152,10 @@ function Todos() {
                                     id,
                                     text: e.currentTarget.elements.updateTodo.value
                                 }
+                            }).then((response) => {
+                                handleResponse(response.data.updateTodo);
+                            }).catch((error) => {
+                                console.log('An unexpected error occurred: ' + error);
                             });
                         }}
                     >
@@ -152,7 +170,11 @@ function Todos() {
                                         type="reset"
                                         size="large"
                                         onClick={() => {
-                                            deleteTodo({ variables: { id: id } });
+                                            deleteTodo({ variables: { id: id } }).then((response) => {
+                                                handleResponse(response.data.deleteTodo);
+                                            }).catch((error) => {
+                                                console.log('An unexpected error occurred: ' + error);
+                                            });
                                         }}
                                     >
                                         Delete
@@ -166,7 +188,11 @@ function Todos() {
                                 checked={completed}
                                 onChange={e => {
                                     e.preventDefault();
-                                    toggleTodo({ variables: { id } });
+                                    toggleTodo({ variables: { id } }).then((response) => {
+                                        handleResponse(response.data.toggleTodo);
+                                    }).catch((error) => {
+                                        console.log('An unexpected error occurred: ' + error);
+                                    });
                                 }}
                             />
                             <TextField
