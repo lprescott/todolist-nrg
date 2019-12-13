@@ -54,6 +54,9 @@ const useStyles = makeStyles(theme => ({
         marginTop: "16px",
         marginLeft: "-16px",
         marginRight: "-16px"
+    },
+    container: {
+        paddingTop: "16px"
     }
 }));
 
@@ -238,7 +241,7 @@ const App = () => {
 
     return (
         <ApolloProvider client={client} >
-            <Container maxWidth="sm">
+            <Container maxWidth="sm" className={classes.container}>
                 <Grid className={classes.root} container spacing={3}>
                     <AddTodo />
                     <Todos />
