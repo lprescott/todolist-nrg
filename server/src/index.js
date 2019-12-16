@@ -1,6 +1,3 @@
-//TODO: https://github.com/cvburgess/SQLDataSource 
-//TODO: https://www.apollographql.com/docs/apollo-server/data/data-sources/#community-data-sources 
-
 const {
   ApolloServer,
   gql
@@ -42,6 +39,7 @@ knex.schema
         table.increments('id');
         table.string('text');
         table.boolean('completed');
+        table.integer('list_id').unsigned();
         table.foreign('list_id').references('lists.id');
       });
     }
@@ -92,10 +90,11 @@ const typeDefs = gql `
   type Query {
     todos: [Todo]
     lists: [List]
+    todolist(list_id: ID): [Todo]
   }
 
   type Mutation {
-    addTodo(text: String): TodoMutationResponse
+    addTodo(text: String, list_id: ID): TodoMutationResponse
     deleteTodo(id: ID): TodoMutationResponse
     updateTodo(id: ID, text: String): TodoMutationResponse
     toggleTodo(id: ID): TodoMutationResponse
@@ -115,6 +114,9 @@ const resolvers = {
     },
     lists: () => {
       return knex.select().from('lists').orderBy('id', 'asc');
+    },
+    todolist: (parent, args) => {
+      return knex.select().from('todos').where('list_id', args.list_id).orderBy('id', 'asc');
     }
   },
   // put, post, delete

@@ -15,6 +15,9 @@ import { Button, Checkbox, TextField, Container, Grid, Paper, CircularProgress, 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useStyles } from "./TodoListStyles";
+import {
+    useParams
+} from "react-router-dom";
 
 const client = new ApolloClient();
 
@@ -103,6 +106,9 @@ function AddTodo() {
 // Lists the todos and their respective controlling structures
 // Called from the app function
 function Todos() {
+
+    let { id } = useParams();
+
     // Declare and define needed queries and manipulations
     const { loading, error, data } = useQuery(GET_TODOS);
     const [deleteTodo] = useMutation(DELETE_TODO, {
