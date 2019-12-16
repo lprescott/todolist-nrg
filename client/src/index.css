@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.text-strike {
+  text-decoration: line-through;
+  font-style: italic;
+}
+body, html {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(255, 251, 246);
+}
+
+.container {
+  padding-top: 16px;
+}
+
+.root {
+  flex-grow: 1;
+}
