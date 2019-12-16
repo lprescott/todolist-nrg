@@ -40,13 +40,16 @@ function handleResponse(response) {
 // Called from the app function
 function AddTodo() {
 
+    let { id } = useParams();
+
     // Declare and define needed manipulation
     const [addTodo] = useMutation(ADD_TODO, {
         update(cache, { data: { addTodo } }) {
-            const { todos } = client.readQuery({ query: GET_TODOS });
+            const { todolist } = client.readQuery({ query: GET_TODOS, variables: {list_id: id} });
             client.writeQuery({
                 query: GET_TODOS,
-                data: { todos: todos.concat([addTodo.todo]) }
+                variables: {list_id: id},
+                data: { todolist: todolist.concat([addTodo.todo]) }
             });
         }
     });
@@ -72,7 +75,8 @@ function AddTodo() {
                         e.preventDefault();
                         addTodo({
                             variables: {
-                                text: e.currentTarget.elements.newTodo.value
+                                text: e.currentTarget.elements.newTodo.value,
+                                list_id: id,
                             }
                         }).then((response) => {
                             handleResponse(response.data.addTodo);
@@ -110,21 +114,29 @@ function Todos() {
     let { id } = useParams();
 
     // Declare and define needed queries and manipulations
-    const { loading, error, data } = useQuery(GET_TODOS);
+    const { loading, error, data } = useQuery(GET_TODOS, {
+        variables: {
+            list_id: id,
+        },
+    });
+
+
     const [deleteTodo] = useMutation(DELETE_TODO, {
         update(cache, { data: { deleteTodo } }) {
-            const { todos } = client.readQuery({ query: GET_TODOS });
+            const { todolist } = client.readQuery({ query: GET_TODOS, variables: {list_id: id} });
             client.writeQuery({
                 query: GET_TODOS,
+                variables: {list_id: id},
                 data: {
-                    todos: todos.filter(todo => {
+                    todolist: todolist.filter(todo => {
                         if (todo.id !== deleteTodo.todo.id) return true;
                         else return false;
                     })
                 }
             });
         }
-    });
+    });    
+    
     const [updateTodo] = useMutation(UPDATE_TODO);
     const [toggleTodo] = useMutation(TOGGLE_TODO);
 
@@ -150,7 +162,7 @@ function Todos() {
     }
 
     // map queries data to JSX
-    return data.todos.map(({ id, text, completed }) => {
+    return data.todolist.map(({ id, text, completed }) => {
 
         return (
             <Grid item className={classes.card}  key={"todo-grid-item-" + id}>
@@ -173,7 +185,7 @@ function Todos() {
                     >
                         <div>
                             <div className={classes.left}>
-                                <Button type="reset" size="large">
+                                <Button type="reset" size="large" variant="outlined">
                                     reset
                                 </Button>
                                 <span className={classes.right}>
@@ -181,6 +193,7 @@ function Todos() {
                                         color="secondary"
                                         type="reset"
                                         size="large"
+                                        variant="outlined"
                                         onClick={() => {
                                             deleteTodo({ variables: { id: id } }).then((response) => {
                                                 handleResponse(response.data.deleteTodo);

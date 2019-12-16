@@ -18,9 +18,8 @@ import TodoList from "../TodoList/TodoList";
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Link
-  } from "react-router-dom";
+    Route
+} from "react-router-dom";
 
 const client = new ApolloClient();
 

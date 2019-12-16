@@ -1,18 +1,19 @@
 import { gql } from "apollo-boost";
 
 export const GET_TODOS = gql`
-    query GetTodos {
-        todos {
+    query GetTodos($list_id: ID!) {
+        todolist(list_id: $list_id) {
             id
             text
             completed
+            list_id
         }
     }
 `;
 
 export const ADD_TODO = gql`
-    mutation addTodo($text: String!) {
-        addTodo(text: $text) {
+    mutation addTodo($text: String!, $list_id: ID!) {
+        addTodo(text: $text, list_id: $list_id) {
             code
             success
             message
@@ -20,6 +21,7 @@ export const ADD_TODO = gql`
                 id
                 text
                 completed
+                list_id
             }
         }
     }
@@ -35,6 +37,7 @@ export const UPDATE_TODO = gql`
                 id
                 text
                 completed
+                list_id
             }
         }
     }
@@ -50,6 +53,7 @@ export const TOGGLE_TODO = gql`
                 id
                 text
                 completed
+                list_id
             }
         }
     }
@@ -65,6 +69,7 @@ export const DELETE_TODO = gql`
                 id
                 text
                 completed
+                list_id
             }
         }
     }
