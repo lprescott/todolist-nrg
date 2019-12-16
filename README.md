@@ -35,7 +35,6 @@ node app.js             # Start the Node.js server
 | Component      | Technology                                                                                      | Version  |
 | -------------- | ----------------------------------------------------------------------------------------------- | -------- |
 | Language       | [JavaScript](https://www.javascript.com/)                                                       | v1.8.5   |
-| Stylesheet     | [SASS](https://sass-lang.com/)                                                                  | v1.23.7  |
 | Frontend       | [React.js](https://reactjs.org/)                                                                | v16.12.0 |
 | Backend        | [Node.js](https://nodejs.org/en/) [(Apollo)](https://www.apollographql.com/docs/apollo-server/) | v12.13.0 |
 | Query Language | [GraphQL](https://graphql.org/)                                                                 | v14.5.8  |
