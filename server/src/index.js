@@ -166,7 +166,7 @@ const resolvers = {
           return {
             code: "200",
             success: true,
-            message: "Successfully update todo.",
+            message: "Successfully updated todo.",
             todo: response[0]
           };
         }).catch((error) => {
@@ -187,7 +187,7 @@ const resolvers = {
               return {
                 code: "200",
                 success: true,
-                message: "Successfully toggled todo",
+                message: "Successfully toggled todo.",
                 todo: {
                   id: args.id,
                   completed: !todo[0].completed
