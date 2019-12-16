@@ -125,6 +125,7 @@ const resolvers = {
 
       let todo = {
         text: args.text,
+        list_id: args.list_id,
         completed: false
       };
 
