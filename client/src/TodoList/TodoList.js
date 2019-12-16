@@ -18,13 +18,19 @@ import { useStyles } from "./TodoListStyles";
 
 const client = new ApolloClient();
 
+// Logs success, or shows error to user by alert
 function handleResponse(response) {
     if (response.success === true) {
-        console.log('success');
+        console.log(response.message);
     } else {
-        console.log('error');
+        Swal.fire({
+            title: 'Error!',
+            text: response.message,
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
     }
-    console.log(response);
+    
 }
 
 // Created the react component to add a new todo
