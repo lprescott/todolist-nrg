@@ -31,3 +31,7 @@ body {
 .root {
   flex-grow: 1;
 }
+
+.right {
+  margin-left: auto !important;
+}

@@ -21,6 +21,10 @@ import {
     Switch,
     Route
 } from "react-router-dom";
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const client = new ApolloClient();
 
@@ -110,6 +114,7 @@ function AddList() {
 // Lists the lists and their respective controlling structures
 // Called from the app function
 function ListofLists() {
+
     // Declare and define needed queries and manipulations
     const { loading, error, data } = useQuery(GET_LISTS);
     const [deleteList] = useMutation(DELETE_LIST, {
@@ -173,7 +178,7 @@ function ListofLists() {
                     >
                         <div>
                             <div className={classes.left}>
-                                <Button variant="outlined" size="large" onClick={() => {
+                                <Button variant="outlined" size="large" href={"/list/" + id} onClick={() => {
                                     
                                 }}>
                                     GoTo
@@ -231,11 +236,18 @@ function ListofLists() {
 // Todo components
 class Lists extends React.Component {
 
-    render() {
+render() {
         return (
             <Router>
                 <Switch >
                     <Route exact path="/">
+                        <AppBar position="static">
+                            <Toolbar variant="dense">
+                                <IconButton edge="start" color="inherit" aria-label="menu">
+                                    <MenuIcon />
+                                </IconButton>
+                            </Toolbar>
+                        </AppBar>
                         <ApolloProvider client={client} >
                             <Container className="container">
                                 <Grid className="root" container spacing={3}>

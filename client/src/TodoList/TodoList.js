@@ -20,6 +20,10 @@ import {
     useParams
 } from "react-router-dom";
 import gql from 'graphql-tag';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const client = new ApolloClient();
 
@@ -276,14 +280,24 @@ class TodoList extends React.Component {
 
     render() {
         return (
-            <ApolloProvider client={client} >
-                <Container className="container">
-                    <Grid className="root" container spacing={3}>
-                        <AddTodo />
-                        <Todos />
-                    </Grid>
-                </Container>
-            </ApolloProvider>
+            <div>
+                <AppBar position="static">
+                <Toolbar variant="dense">
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <MenuIcon />
+                    </IconButton>
+                    <Button color="inherit" className="right" href="/">Back</Button>
+                </Toolbar>
+                </AppBar>
+                <ApolloProvider client={client} >
+                    <Container className="container">
+                        <Grid className="root" container spacing={3}>
+                            <AddTodo />
+                            <Todos />
+                        </Grid>
+                    </Container>
+                </ApolloProvider>
+            </div>
         );
     }
 
