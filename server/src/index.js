@@ -18,14 +18,31 @@ var knex = require('knex')({
   }
 });
 
-// Create a table
+// Create lists table
+knex.schema
+  .hasTable('lists').then(function (exists) {
+    if (!exists) {
+      return knex.schema.createTable('lists', function (table) {
+        table.increments('id');
+        table.string('title');
+      });
+    }
+  })
+
+  // Finally, add a .catch handler for the promise chain
+  .catch(function (e) {
+    console.error(e);
+  });
+
+// Create todos table
 knex.schema
   .hasTable('todos').then(function (exists) {
     if (!exists) {
       return knex.schema.createTable('todos', function (table) {
         table.increments('id');
         table.string('text');
-        table.boolean(('completed'));
+        table.boolean('completed');
+        table.foreign('list_id').references('lists.id');
       });
     }
   })
@@ -55,11 +72,19 @@ const typeDefs = gql `
     id: ID
     text: String
     completed: Boolean
+    list_id: ID
+  }
+
+  # list model
+  type List {
+    id: ID
+    title: String
   }
 
   # queries: returnables
   type Query {
     todos: [Todo]
+    lists: [List]
   }
 
   type Mutation {
@@ -67,6 +92,9 @@ const typeDefs = gql `
     deleteTodo(id: ID): TodoMutationResponse
     updateTodo(id: ID, text: String): TodoMutationResponse
     toggleTodo(id: ID): TodoMutationResponse
+    addList(title: String): List
+    deleteList(id: ID): Boolean
+    updateList(id: ID, title: String): List    
   }
 `;
 
@@ -76,6 +104,9 @@ const resolvers = {
   Query: {
     todos: () => {
       return knex.select().from('todos').orderBy('id', 'asc');
+    },
+    lists: () => {
+      return knex.select().from('lists').orderBy('id', 'asc');
     }
   },
   // put, post, delete
@@ -182,7 +213,39 @@ const resolvers = {
             }
           };
         });
-    }
+    },
+    addList: (parent, args) => {
+
+      let list = {
+        title: args.title
+      };
+
+      return knex('lists').insert(list, 'id')
+        .then((id) => {
+          list.id = id[0];
+          return list;
+        }).catch((error) => {
+          return null;
+        });
+    },
+    deleteList: (parent, args) => {
+
+      return knex('lists').where('id', args.id).del()
+        .then(() => {
+          return true;
+        }).catch((error) => {
+          return false;
+        });
+    },
+    updateList: (parent, args) => {
+
+      return knex('lists').where('id', args.id).update('title', args.title).returning('*')
+        .then((response) => {
+          return response[0]
+        }).catch((error) => {
+          return null;
+        });
+    },
   },
   MutationResponse: {
     __resolveType() {
