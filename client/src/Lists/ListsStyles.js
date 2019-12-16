@@ -6,7 +6,11 @@ export const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         textAlign: 'center'
     },
-    card: {
+    cardNew: {
+        flexGrow: "inherit",
+        width: "100%",
+    },
+    cardItem: {
         flexGrow: "inherit",
     },
     loading: {

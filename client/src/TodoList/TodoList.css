@@ -17,3 +17,7 @@ body {
 .root {
   flex-grow: 1;
 }
+
+.fullWidth {
+  width: 100%;
+}

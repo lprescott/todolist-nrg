@@ -71,7 +71,7 @@ function AddTodo() {
             confirmButtonText: 'Okay'
         });
     } else {
-        
+
         title = data.list.title;
     }
 
@@ -92,7 +92,7 @@ function AddTodo() {
 
     // map to JSX
     return (
-        <Grid item className={classes.card}>
+        <Grid item className={classes.cardNew}>
             <Paper className={classes.paper}>
                 <h2>
                     {title + " "}
@@ -193,7 +193,7 @@ function Todos() {
     return data.todolist.map(({ id, text, completed }) => {
 
         return (
-            <Grid item className={classes.card} key={"todo-grid-item-" + id}>
+            <Grid item className={classes.cardItem} key={"todo-grid-item-" + id}>
                 <Paper className={classes.paper}>
                     <form
                         key={"todo-" + id}
@@ -276,7 +276,7 @@ class TodoList extends React.Component {
     render() {
         return (
             <ApolloProvider client={client} >
-                <Container maxWidth="sm" className="container">
+                <Container className="container">
                     <Grid className="root" container spacing={3}>
                         <AddTodo />
                         <Todos />

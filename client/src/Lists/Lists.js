@@ -58,7 +58,7 @@ function AddList() {
 
     // map to JSX
     return (
-        <Grid item className={classes.card}>
+        <Grid item className={classes.cardNew}>
             <Paper className={classes.paper}>
                 <h2>
                     The Todolist Challenge in the eNeRGy stack.{" "}
@@ -152,7 +152,7 @@ function ListofLists() {
     return data.lists.map(({ id, title }) => {
 
         return (
-            <Grid item className={classes.card} key={"list-grid-item-" + id}>
+            <Grid item className={classes.cardItem} key={"list-grid-item-" + id}>
                 <Paper className={classes.paper}>
                     <form
                         key={"list-" + id}
@@ -172,7 +172,9 @@ function ListofLists() {
                     >
                         <div>
                             <div className={classes.left}>
-                                <Button variant="outlined" size="large" href={"/list/" + id}>
+                                <Button variant="outlined" size="large" onClick={() => {
+                                    
+                                }}>
                                     GoTo
                                 </Button>
                                 <span className={classes.right}>
@@ -234,7 +236,7 @@ class Lists extends React.Component {
                 <Switch >
                     <Route exact path="/">
                         <ApolloProvider client={client} >
-                            <Container maxWidth="sm" className="container">
+                            <Container className="container">
                                 <Grid className="root" container spacing={3}>
                                     <AddList />
                                     <ListofLists />
