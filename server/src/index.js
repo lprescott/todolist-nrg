@@ -67,6 +67,13 @@ const typeDefs = gql `
     todo: Todo
   }
 
+  type ListMutationResponse implements MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+    list: List
+  }
+
   # todo model
   type Todo {
     id: ID
@@ -92,9 +99,10 @@ const typeDefs = gql `
     deleteTodo(id: ID): TodoMutationResponse
     updateTodo(id: ID, text: String): TodoMutationResponse
     toggleTodo(id: ID): TodoMutationResponse
-    addList(title: String): List
-    deleteList(id: ID): Boolean
-    updateList(id: ID, title: String): List    
+
+    addList(title: String): ListMutationResponse
+    deleteList(id: ID): ListMutationResponse
+    updateList(id: ID, title: String): ListMutationResponse    
   }
 `;
 
@@ -223,27 +231,61 @@ const resolvers = {
       return knex('lists').insert(list, 'id')
         .then((id) => {
           list.id = id[0];
-          return list;
+          return {
+            code: "200",
+            success: true,
+            message: "Successfully added list.",
+            list
+          };
         }).catch((error) => {
-          return null;
+          return {
+            code: "500",
+            success: false,
+            message: "Could not add list.",
+            list
+          };
         });
     },
     deleteList: (parent, args) => {
 
       return knex('lists').where('id', args.id).del()
         .then(() => {
-          return true;
+          return {
+            code: "200",
+            success: true,
+            message: "Successfully deleted list.",
+            list: {
+              id: args.id
+            }
+          };
         }).catch((error) => {
-          return false;
+          return {
+            code: "500",
+            success: false,
+            message: "Could not delete list.",
+            list: {
+              id: args.id
+            }
+          };
         });
     },
     updateList: (parent, args) => {
 
       return knex('lists').where('id', args.id).update('title', args.title).returning('*')
         .then((response) => {
-          return response[0]
+          return {
+            code: "200",
+            success: true,
+            message: "Successfully updated list.",
+            list: response[0]
+          };
         }).catch((error) => {
-          return null;
+          return {
+            code: "500",
+            success: false,
+            message: "Could not update list.",
+            list: response[0]
+          };
         });
     },
   },
