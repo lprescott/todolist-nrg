@@ -14,6 +14,13 @@ import { Button, TextField, Container, Grid, Paper, CircularProgress, Divider, B
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useStyles } from "./ListsStyles";
+import TodoList from "../TodoList/TodoList";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 
 const client = new ApolloClient();
 
@@ -101,7 +108,7 @@ function AddList() {
 
 // Lists the lists and their respective controlling structures
 // Called from the app function
-function Todos() {
+function ListofLists() {
     // Declare and define needed queries and manipulations
     const { loading, error, data } = useQuery(GET_LISTS);
     const [deleteList] = useMutation(DELETE_LIST, {
@@ -165,7 +172,7 @@ function Todos() {
                     >
                         <div>
                             <div className={classes.left}>
-                                <Button variant="outlined" size="large">
+                                <Button variant="outlined" size="large" href={"/list/" + id}>  
                                     GoTo
                                 </Button>
                                 <span className={classes.right}>
@@ -219,21 +226,29 @@ function Todos() {
 
 // The app that uses an apollo provider and the above AddList and
 // Todo components
-class TodoList extends React.Component {
+class Lists extends React.Component {
 
     render() {
         return (
-            <ApolloProvider client={client} >
-                <Container maxWidth="sm" className="container">
-                    <Grid className="root" container spacing={3}>
-                        <AddList />
-                        <Todos />
-                    </Grid>
-                </Container>
-            </ApolloProvider>
+            <Router>
+                <Switch >
+                    <Route exact path="/">
+                        <ApolloProvider client={client} >
+                            <Container maxWidth="sm" className="container">
+                                <Grid className="root" container spacing={3}>
+                                    <AddList />
+                                    <ListofLists />
+                                </Grid>
+                            </Container>
+                        </ApolloProvider>
+                    </Route>
+                    <Route path="/list/:id" component={TodoList}>
+                    </Route>
+                </Switch>
+            </Router>
         );
     }
 
 };
 
-export default TodoList;
+export default Lists;
