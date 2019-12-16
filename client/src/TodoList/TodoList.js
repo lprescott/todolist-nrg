@@ -218,21 +218,21 @@ function Todos() {
 
 // The app that uses an apollo provider and the above AddTodo and
 // Todo components
-const TodoList = () => {
+class TodoList extends React.Component {
 
-    // get styles from above useStyles method
-    const classes = useStyles();
+    render() {
+        return (
+            <ApolloProvider client={client} >
+                <Container maxWidth="sm" className="container">
+                    <Grid className="root" container spacing={3}>
+                        <AddTodo />
+                        <Todos />
+                    </Grid>
+                </Container>
+            </ApolloProvider>
+        );
+    }
 
-    return (
-        <ApolloProvider client={client} >
-            <Container maxWidth="sm" className={classes.container}>
-                <Grid className={classes.root} container spacing={3}>
-                    <AddTodo />
-                    <Todos />
-                </Grid>
-            </Container>
-        </ApolloProvider>
-    );
 };
 
 export default TodoList;
