@@ -61,13 +61,14 @@ function AddList() {
         <Grid item className={classes.card}>
             <Paper className={classes.paper}>
                 <h2>
-                    A Todolist in the eNeRGy stack.{" "}
-                    <span aria-label="rocket-emoji" role="img">
-                        🚀
-                    </span>
+                    The Todolist Challenge in the eNeRGy stack.{" "}
                 </h2>
                 <h4>Node.js, React.js and GraphQL</h4>
-                <p>Material-UI, Apollo, Knex and PostgresQL</p>
+                <p>
+                    Material-UI, Apollo {' '}
+                    <span aria-label="rocket-emoji" role="img">🚀</span>
+                    , Knex and PostgresQL
+                </p>
                 <Divider variant="fullWidth" className={classes.divider} />
                 <form
                     onSubmit={e => {
@@ -171,12 +172,12 @@ function ListofLists() {
                     >
                         <div>
                             <div className={classes.left}>
-                                <Button variant="outlined" size="large" href={"/list/" + id}>  
+                                <Button variant="outlined" size="large" href={"/list/" + id}>
                                     GoTo
                                 </Button>
                                 <span className={classes.right}>
                                     <ButtonGroup>
-                                        <Button 
+                                        <Button
                                             type="reset"
                                         >
                                             Reset
@@ -241,7 +242,7 @@ class Lists extends React.Component {
                             </Container>
                         </ApolloProvider>
                     </Route>
-                    <Route path="/list/:id" component={TodoList}>
+                    <Route path="/list/:lid" component={TodoList}>
                     </Route>
                 </Switch>
             </Router>

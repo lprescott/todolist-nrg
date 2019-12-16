@@ -91,6 +91,7 @@ const typeDefs = gql `
     todos: [Todo]
     lists: [List]
     todolist(list_id: ID): [Todo]
+    list(id: ID): List
   }
 
   type Mutation {
@@ -117,6 +118,9 @@ const resolvers = {
     },
     todolist: (parent, args) => {
       return knex.select().from('todos').where('list_id', args.list_id).orderBy('id', 'asc');
+    },
+    list: (parent, args) => {
+      return knex.select().from('lists').where('id', args.id).first();
     }
   },
   // put, post, delete

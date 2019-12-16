@@ -18,6 +18,7 @@ import { useStyles } from "./TodoListStyles";
 import {
     useParams
 } from "react-router-dom";
+import gql from 'graphql-tag';
 
 const client = new ApolloClient();
 
@@ -33,22 +34,54 @@ function handleResponse(response) {
             confirmButtonText: 'Okay'
         });
     }
-    
+
 }
 
 // Created the react component to add a new todo
 // Called from the app function
 function AddTodo() {
 
-    let { id } = useParams();
+    let { lid } = useParams();
+    let title;
+
+    const GET_LIST = gql`
+        query list($id: ID!) {
+            list(id: $id) {
+                id
+                title
+            }
+        }
+    `;
+
+    const { loading, error, data } = useQuery(GET_LIST, {
+        variables: {
+            id: lid,
+        },
+    });
+
+    if (loading) {
+
+        title = "loading...";
+    } else if (error) {
+
+        Swal.fire({
+            title: 'Error!',
+            text: 'There was an error retrieving the title.',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+        });
+    } else {
+        
+        title = data.list.title;
+    }
 
     // Declare and define needed manipulation
     const [addTodo] = useMutation(ADD_TODO, {
         update(cache, { data: { addTodo } }) {
-            const { todolist } = client.readQuery({ query: GET_TODOS, variables: {list_id: id} });
+            const { todolist } = client.readQuery({ query: GET_TODOS, variables: { list_id: lid } });
             client.writeQuery({
                 query: GET_TODOS,
-                variables: {list_id: id},
+                variables: { list_id: lid },
                 data: { todolist: todolist.concat([addTodo.todo]) }
             });
         }
@@ -62,21 +95,16 @@ function AddTodo() {
         <Grid item className={classes.card}>
             <Paper className={classes.paper}>
                 <h2>
-                    A Todolist in the eNeRGy stack.{" "}
-                    <span aria-label="rocket-emoji" role="img">
-                        🚀
-                    </span>
+                    {title + " "}
                 </h2>
-                <h4>Node.js, React.js and GraphQL</h4>
-                <p>Material-UI, Apollo, Knex and PostgresQL</p>
-                <Divider variant="fullWidth" className={classes.divider}/>
+                <Divider variant="fullWidth" className={classes.divider} />
                 <form
                     onSubmit={e => {
                         e.preventDefault();
                         addTodo({
                             variables: {
                                 text: e.currentTarget.elements.newTodo.value,
-                                list_id: id,
+                                list_id: lid,
                             }
                         }).then((response) => {
                             handleResponse(response.data.addTodo);
@@ -111,22 +139,22 @@ function AddTodo() {
 // Called from the app function
 function Todos() {
 
-    let { id } = useParams();
+    let { lid } = useParams();
 
     // Declare and define needed queries and manipulations
     const { loading, error, data } = useQuery(GET_TODOS, {
         variables: {
-            list_id: id,
+            list_id: lid,
         },
     });
 
 
     const [deleteTodo] = useMutation(DELETE_TODO, {
         update(cache, { data: { deleteTodo } }) {
-            const { todolist } = client.readQuery({ query: GET_TODOS, variables: {list_id: id} });
+            const { todolist } = client.readQuery({ query: GET_TODOS, variables: { list_id: lid } });
             client.writeQuery({
                 query: GET_TODOS,
-                variables: {list_id: id},
+                variables: { list_id: lid },
                 data: {
                     todolist: todolist.filter(todo => {
                         if (todo.id !== deleteTodo.todo.id) return true;
@@ -135,8 +163,8 @@ function Todos() {
                 }
             });
         }
-    });    
-    
+    });
+
     const [updateTodo] = useMutation(UPDATE_TODO);
     const [toggleTodo] = useMutation(TOGGLE_TODO);
 
@@ -165,7 +193,7 @@ function Todos() {
     return data.todolist.map(({ id, text, completed }) => {
 
         return (
-            <Grid item className={classes.card}  key={"todo-grid-item-" + id}>
+            <Grid item className={classes.card} key={"todo-grid-item-" + id}>
                 <Paper className={classes.paper}>
                     <form
                         key={"todo-" + id}
@@ -207,7 +235,7 @@ function Todos() {
                                 </span>
                             </div>
                         </div>
-                        <Divider variant="fullWidth" className={classes.divider}/>
+                        <Divider variant="fullWidth" className={classes.divider} />
                         <div>
                             <Checkbox
                                 checked={completed}
