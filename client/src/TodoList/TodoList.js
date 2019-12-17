@@ -153,7 +153,6 @@ function Todos() {
         },
     });
 
-
     const [deleteTodo] = useMutation(DELETE_TODO, {
         update(cache, { data: { deleteTodo } }) {
             const { todolist } = client.readQuery({ query: GET_TODOS, variables: { list_id: lid } });

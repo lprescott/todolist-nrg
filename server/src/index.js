@@ -15,6 +15,28 @@ var knex = require('knex')({
   }
 });
 
+// Create users table
+knex.schema
+  .hasTable('users').then(function (exists) {
+    if (!exists) {
+      return knex.schema.createTable('users', function (table) {
+        table.increments('id');
+        table.string('username');
+        table.string('password');
+      });
+    }
+  })
+
+  // Then query the table...
+  .then(function() {
+    return knex('users').insert({ username: 'user', password: 'pass' });
+  })
+
+  // Finally, add a .catch handler for the promise chain
+  .catch(function (e) {
+    console.error(e);
+  });
+
 // Create lists table
 knex.schema
   .hasTable('lists').then(function (exists) {
@@ -22,6 +44,8 @@ knex.schema
       return knex.schema.createTable('lists', function (table) {
         table.increments('id');
         table.string('title');
+        table.integer('user_id').unsigned();
+        table.foreign('user_id').references('users.id');
       });
     }
   })
@@ -52,24 +76,31 @@ knex.schema
 
 // the data types, return types, and response types
 const typeDefs = gql `
-  interface MutationResponse {
+  interface Response {
     code: String!
     success: Boolean!
     message: String!
   }
 
-  type TodoMutationResponse implements MutationResponse {
+  type TodoMutationResponse implements Response {
     code: String!
     success: Boolean!
     message: String!
     todo: Todo
   }
 
-  type ListMutationResponse implements MutationResponse {
+  type ListMutationResponse implements Response {
     code: String!
     success: Boolean!
     message: String!
     list: List
+  }
+
+  type UserLoginResponse implements Response {
+    code: String!
+    success: Boolean!
+    message: String!
+    user: User
   }
 
   # todo model
@@ -86,12 +117,20 @@ const typeDefs = gql `
     title: String
   }
 
+  # user model
+  type User {
+    id: ID
+    username: String
+    password: String
+  }
+
   # queries: returnables
   type Query {
     todos: [Todo]
     lists: [List]
     todolist(list_id: ID): [Todo]
     list(id: ID): List
+    login(username: String, password: String): UserLoginResponse
   }
 
   type Mutation {
@@ -121,6 +160,28 @@ const resolvers = {
     },
     list: (parent, args) => {
       return knex.select().from('lists').where('id', args.id).first();
+    },
+    login: (parent, args) => {
+      return knex.select().from('users').where('username', args.username).andWhere('password', args.password).first().then((user) => {
+        if(user) {
+          return {
+            code: "200",
+            success: true,
+            message: "Successfully logged on.",
+            user: {
+              id: user.id,
+              username: user.username,
+              password: null
+            }
+          }
+        } else {
+          return {
+            code: "405",
+            success: false,
+            message: "Invalid login credentials.",
+          }
+        }
+      })
     }
   },
   // put, post, delete
@@ -296,7 +357,7 @@ const resolvers = {
         });
     },
   },
-  MutationResponse: {
+  Response: {
     __resolveType() {
       return null;
     }

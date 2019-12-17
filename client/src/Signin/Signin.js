@@ -12,7 +12,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import "../index.css";
+import ApolloClient from "apollo-boost";
+import {
+  LOGIN,
+} from "./SigninQueries";
+import Swal from 'sweetalert2';
+import Cookies from 'universal-cookie';
 
+const client = new ApolloClient();
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -35,9 +42,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn() {
-  const classes = useStyles();
+const cookies = new Cookies();
 
+export default function SignIn() {
+
+  const classes = useStyles();
+  cookies.remove('user');
+  
   return (
     <div>
       <AppBar position="static">
@@ -57,7 +68,11 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form}>
+          <form id="login-form" className={classes.form} onSubmit={ (e) => {
+            e.preventDefault();
+            handleLogin(e)
+            document.getElementById("login-form").reset();
+          }}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -95,4 +110,42 @@ export default function SignIn() {
       </Container>
     </div>
   );
+}
+
+function handleLogin(e) {
+
+  let username = e.currentTarget.elements.username.value;
+  let password = e.currentTarget.elements.password.value;
+
+  client
+    .query({
+      query: LOGIN,
+      variables: {
+        username,
+        password
+      }
+    })
+    .then(result => {
+      console.log(result.data.login);
+      if (result.data.login.success === true) {
+        cookies.set('user', result.data.login.user);
+        window.location.href = "/user";
+      } else {
+
+        Swal.fire({
+          title: 'Invalid Login Credentials',
+          icon: 'error',
+          confirmButtonText: 'Okay'
+        });
+      }
+
+    }).catch(error => {
+      console.log(error)
+      Swal.fire({
+        title: 'Error!',
+        text: 'There was an unknown error while logging in.',
+        icon: 'error',
+        confirmButtonText: 'Okay'
+      });
+    });
 }
