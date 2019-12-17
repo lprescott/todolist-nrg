@@ -12,20 +12,21 @@ code {
     monospace;
 }
 
-.text-strike {
+.text-strike, .text-strike input {
   text-decoration: line-through;
   font-style: italic;
 }
+
 body, html {
   height: 100%;
 }
 
 body {
-  background-color: rgb(253, 246, 237);
+  background-color: rgb(253, 246, 237) !important;
 }
 
 .container {
-  padding-top: 16px;
+  padding-top: 24px;
 }
 
 .root {

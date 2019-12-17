@@ -16,14 +16,12 @@ import { Button, Checkbox, TextField, Container, Grid, Paper, CircularProgress, 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useStyles } from "./TodoListStyles";
-import {
-    useParams
-} from "react-router-dom";
 import gql from 'graphql-tag';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Cookies from 'universal-cookie';
 
 const client = new ApolloClient();
 
@@ -46,7 +44,8 @@ function handleResponse(response) {
 // Called from the app function
 function AddTodo() {
 
-    let { lid } = useParams();
+    const cookies = new Cookies();
+    let lid = cookies.get('lid');
     let title;
 
     const GET_LIST = gql`
@@ -144,7 +143,8 @@ function AddTodo() {
 // Called from the app function
 function Todos() {
 
-    let { lid } = useParams();
+    const cookies = new Cookies();
+    let lid = cookies.get('lid');
 
     // Declare and define needed queries and manipulations
     const { loading, error, data } = useQuery(GET_TODOS, {
@@ -264,7 +264,7 @@ function Todos() {
                                 autoComplete="off"
                             />
                             <Button variant="contained" color="primary" type="submit" size="large">
-                                Submit
+                                Update
                             </Button>
                         </div>
                     </form>
@@ -282,12 +282,13 @@ class TodoList extends React.Component {
         return (
             <div>
                 <AppBar position="static">
-                <Toolbar variant="dense">
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <MenuIcon />
-                    </IconButton>
-                    <Button color="inherit" className="right" href="/">Back</Button>
-                </Toolbar>
+                    <Toolbar variant="dense">
+                        <IconButton edge="start" color="inherit" aria-label="menu">
+                            <MenuIcon />
+                        </IconButton>
+                        <Button color="inherit" className="right" href="/user">Back</Button>
+                        <Button color="inherit" href="/">Logout</Button>
+                    </Toolbar>
                 </AppBar>
                 <ApolloProvider client={client} >
                     <Container className="container">

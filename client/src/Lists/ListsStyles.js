@@ -16,7 +16,7 @@ export const useStyles = makeStyles(theme => ({
     loading: {
         position: "absolute",
         left: "50%",
-        top: "300px",
+        top: "50%",
         marginLeft: "-25px;"
     },
     newListInput: {
@@ -24,7 +24,7 @@ export const useStyles = makeStyles(theme => ({
         paddingRight: "16px",
     },
     listItemInput: {
-        width: "calc(100% - 118px)",
+        width: "calc(100% - 119px)",
         paddingRight: "16px",
     },
     left: {

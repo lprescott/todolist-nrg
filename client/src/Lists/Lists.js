@@ -25,6 +25,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Cookies from 'universal-cookie';
+import SignIn from '../Signin/Signin.js';
 
 const client = new ApolloClient();
 
@@ -178,8 +180,9 @@ function ListofLists() {
                     >
                         <div>
                             <div className={classes.left}>
-                                <Button variant="outlined" size="large" href={"/list/" + id} onClick={() => {
-                                    
+                                <Button variant="outlined" size="large" href={"/user/list"} onClick={() => {
+                                    const cookies = new Cookies();
+                                    cookies.set('lid', id);
                                 }}>
                                     GoTo
                                 </Button>
@@ -203,9 +206,8 @@ function ListofLists() {
                                             }}
                                         >
                                             Delete
-                                </Button>
+                                        </Button>
                                     </ButtonGroup>
-
                                 </span>
                             </div>
                         </div>
@@ -222,7 +224,7 @@ function ListofLists() {
                                 className={classes.listItemInput}
                             />
                             <Button variant="contained" color="primary" type="submit" size="large">
-                                Submit
+                                Update
                             </Button>
                         </div>
                     </form>
@@ -240,12 +242,16 @@ render() {
         return (
             <Router>
                 <Switch >
-                    <Route exact path="/">
+                    <Route exact path="/" component={SignIn}>
+
+                    </Route>
+                    <Route exact path="/user">
                         <AppBar position="static">
                             <Toolbar variant="dense">
                                 <IconButton edge="start" color="inherit" aria-label="menu">
                                     <MenuIcon />
                                 </IconButton>
+                                <Button color="inherit" className="right" href="/">Logout</Button>
                             </Toolbar>
                         </AppBar>
                         <ApolloProvider client={client} >
@@ -257,7 +263,7 @@ render() {
                             </Container>
                         </ApolloProvider>
                     </Route>
-                    <Route path="/list/:lid" component={TodoList}>
+                    <Route path="/user/list" component={TodoList}>
                     </Route>
                 </Switch>
             </Router>

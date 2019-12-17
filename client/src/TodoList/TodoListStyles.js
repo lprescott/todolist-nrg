@@ -24,7 +24,7 @@ export const useStyles = makeStyles(theme => ({
         paddingRight: "16px",
     },
     todoItemInput: {
-        width: "calc(100% - 176px)",
+        width: "calc(100% - 177px)",
         paddingRight: "16px",
         paddingLeft: "16px",
     },
