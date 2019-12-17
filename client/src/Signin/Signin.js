@@ -48,6 +48,7 @@ export default function SignIn() {
 
   const classes = useStyles();
   cookies.remove('user');
+  cookies.remove('lid');
   
   return (
     <div>
