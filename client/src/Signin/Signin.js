@@ -126,8 +126,9 @@ function handleLogin(e) {
       }
     })
     .then(result => {
-      console.log(result.data.login);
+
       if (result.data.login.success === true) {
+        
         cookies.set('user', result.data.login.user);
         window.location.href = "/user";
       } else {

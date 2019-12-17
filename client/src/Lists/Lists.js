@@ -29,6 +29,7 @@ import Cookies from 'universal-cookie';
 import SignIn from '../Signin/Signin.js';
 
 const client = new ApolloClient();
+const cookies = new Cookies();
 
 // Logs success, or shows error to user by alert
 function handleResponse(response) {
@@ -49,12 +50,15 @@ function handleResponse(response) {
 // Called from the app function
 function AddList() {
 
+    const uid = cookies.get('user').id;
+
     // Declare and define needed manipulation
     const [addList] = useMutation(ADD_LIST, {
         update(cache, { data: { addList } }) {
-            const { lists } = client.readQuery({ query: GET_LISTS });
+            const { lists } = client.readQuery({ query: GET_LISTS,  variables: {user_id: uid}});
             client.writeQuery({
                 query: GET_LISTS,
+                variables: {user_id: uid},
                 data: { lists: lists.concat([addList.list]) }
             });
         }
@@ -80,11 +84,14 @@ function AddList() {
                 <form
                     onSubmit={e => {
                         e.preventDefault();
+                        console.log(uid)
                         addList({
                             variables: {
-                                title: e.currentTarget.elements.newList.value
+                                title: e.currentTarget.elements.newList.value,
+                                user_id: uid
                             }
                         }).then((response) => {
+                            console.log(response)
                             handleResponse(response.data.addList);
                         }).catch((error) => {
                             console.log('An unexpected error occurred: ' + error);
@@ -117,13 +124,21 @@ function AddList() {
 // Called from the app function
 function ListofLists() {
 
+    const uid = cookies.get('user').id;
+
     // Declare and define needed queries and manipulations
-    const { loading, error, data } = useQuery(GET_LISTS);
+    const { loading, error, data } = useQuery(GET_LISTS, {
+        variables: {
+            user_id: uid,
+        },
+    });
+
     const [deleteList] = useMutation(DELETE_LIST, {
         update(cache, { data: { deleteList } }) {
-            const { lists } = client.readQuery({ query: GET_LISTS });
+            const { lists } = client.readQuery({ query: GET_LISTS, variables: {user_id: uid} });
             client.writeQuery({
                 query: GET_LISTS,
+                variables: {user_id: uid},
                 data: {
                     lists: lists.filter(list => {
                         if (list.id !== deleteList.list.id) return true;
@@ -181,7 +196,6 @@ function ListofLists() {
                         <div>
                             <div className={classes.left}>
                                 <Button variant="outlined" size="large" href={"/user/list"} onClick={() => {
-                                    const cookies = new Cookies();
                                     cookies.set('lid', id);
                                 }}>
                                     GoTo

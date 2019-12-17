@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 export const GET_LISTS = gql`
-    query GetLists {
-        lists {
+    query GetLists($user_id: ID!) {
+        lists(user_id: $user_id) {
             id
             title
         }
@@ -10,14 +10,15 @@ export const GET_LISTS = gql`
 `;
 
 export const ADD_LIST = gql`
-    mutation addList($title: String!) {
-        addList(title: $title) {
+    mutation addList($title: String!, $user_id: ID!) {
+        addList(title: $title, user_id: $user_id) {
             code
             success
             message
             list {
                 id
                 title
+                user_id
             }
         }
     }

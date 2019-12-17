@@ -27,9 +27,13 @@ knex.schema
     }
   })
 
-  // Then query the table...
+  // Then insert into the table some users
   .then(function() {
-    return knex('users').insert({ username: 'user', password: 'pass' });
+    return knex('users').insert({ username: 'user1', password: 'pass' });
+  })
+
+  .then(function() {
+    return knex('users').insert({ username: 'user2', password: 'pass' });
   })
 
   // Finally, add a .catch handler for the promise chain
@@ -115,6 +119,7 @@ const typeDefs = gql `
   type List {
     id: ID
     title: String
+    user_id: ID
   }
 
   # user model
@@ -127,7 +132,7 @@ const typeDefs = gql `
   # queries: returnables
   type Query {
     todos: [Todo]
-    lists: [List]
+    lists(user_id: ID): [List]
     todolist(list_id: ID): [Todo]
     list(id: ID): List
     login(username: String, password: String): UserLoginResponse
@@ -139,7 +144,7 @@ const typeDefs = gql `
     updateTodo(id: ID, text: String): TodoMutationResponse
     toggleTodo(id: ID): TodoMutationResponse
 
-    addList(title: String): ListMutationResponse
+    addList(title: String, user_id: ID): ListMutationResponse
     deleteList(id: ID): ListMutationResponse
     updateList(id: ID, title: String): ListMutationResponse    
   }
@@ -152,8 +157,8 @@ const resolvers = {
     todos: () => {
       return knex.select().from('todos').orderBy('id', 'asc');
     },
-    lists: () => {
-      return knex.select().from('lists').orderBy('id', 'asc');
+    lists: (parent, args) => {
+      return knex.select().from('lists').where('user_id', args.user_id).orderBy('id', 'asc');
     },
     todolist: (parent, args) => {
       return knex.select().from('todos').where('list_id', args.list_id).orderBy('id', 'asc');
@@ -293,7 +298,8 @@ const resolvers = {
     addList: (parent, args) => {
 
       let list = {
-        title: args.title
+        title: args.title,
+        user_id: args.user_id,
       };
 
       return knex('lists').insert(list, 'id')
