@@ -70,14 +70,7 @@ export default function SignIn() {
           </Typography>
           <form id="login-form" className={classes.form} onSubmit={ (e) => {
             e.preventDefault();
-            handleLogin(e)
-            Swal.fire({
-              title: 'Success',
-              text: 'You will be logged in momentarily.',
-              icon: 'success'
-            }).then(
-              document.getElementById("login-form").reset()
-            );
+            handleLogin(e)          
           }}>
             <TextField
               variant="outlined"
@@ -135,7 +128,11 @@ function handleLogin(e) {
     .then(result => {
 
       if (result.data.login.success === true) {
-        
+        Swal.fire({
+          title: 'Success',
+          text: 'You will be redirected in momentarily.',
+          icon: 'success'
+        })
         cookies.set('user', result.data.login.user);
         window.location.href = "/user";
       } else {
@@ -144,7 +141,9 @@ function handleLogin(e) {
           title: 'Invalid Login Credentials',
           icon: 'error',
           confirmButtonText: 'Okay'
-        });
+        }).then(() => {
+          document.getElementById("login-form").reset();
+        })
       }
 
     }).catch(error => {
