@@ -71,7 +71,13 @@ export default function SignIn() {
           <form id="login-form" className={classes.form} onSubmit={ (e) => {
             e.preventDefault();
             handleLogin(e)
-            document.getElementById("login-form").reset();
+            Swal.fire({
+              title: 'Success',
+              text: 'You will be logged in momentarily.',
+              icon: 'success'
+            }).then(
+              document.getElementById("login-form").reset()
+            );
           }}>
             <TextField
               variant="outlined"
@@ -81,7 +87,8 @@ export default function SignIn() {
               id="username"
               label="Username"
               name="username"
-              autoComplete="username"
+              type="username"
+              autoComplete="off"
               autoFocus
             />
             <TextField
@@ -93,7 +100,7 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="off"
             />
             <Button
               type="submit"
