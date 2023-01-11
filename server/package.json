@@ -14,7 +14,7 @@
     "apollo-server": "^2.9.13",
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.20.4",
+    "knex": "^2.4.0",
     "pg": "^7.14.0"
   }
 }
